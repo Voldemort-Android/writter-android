@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         // TODO Check if user was already logged in, and redirect them to the main activity.
 
         super.onCreate(savedInstanceState);
+
+        setTitle(R.string.title_login);
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -176,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoginSuccess(HttpResponse httpResponse) {
         mAuthTask = null;
-        showProgress(false);
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
