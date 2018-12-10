@@ -60,7 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton = findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener((view) -> attemptLogin());
 
-        // TODO Add a button for registering.
+        mRegisterButton = findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(this::navigateToRegistrationActivity);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -198,6 +199,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO Add toast to display other error messages
 
+    }
+
+    private void navigateToRegistrationActivity(View view) {
+        Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(intent);
     }
 
 }
