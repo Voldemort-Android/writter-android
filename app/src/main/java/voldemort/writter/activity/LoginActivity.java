@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import voldemort.writter.R;
+import voldemort.writter.http.HttpEndpoints;
 import voldemort.writter.http.client.HttpClient;
 import voldemort.writter.http.client.HttpResponse;
 
@@ -120,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Log.d("HELLO", "Attempting login with " + credentials);
 
-            mAuthTask = HttpClient.Post("https://1d22a682.ngrok.io/rest/login", credentials, this::onLoginSuccess, this::onLoginError);
+            mAuthTask = HttpClient.Post(HttpEndpoints.WRITTER_SERVER_API + "/login", credentials, this::onLoginSuccess, this::onLoginError);
         }
     }
 
