@@ -9,35 +9,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import voldemort.writter.R;
+import voldemort.writter.http.client.HttpClient;
+import voldemort.writter.http.client.HttpResponse;
 
 /**
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "asdf:asdf",
-            "test:hello"
-    };
+    private AsyncTask<Void, Void, HttpResponse> mAuthTask = null;
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private Button mSignInButton;
+    private Button mRegisterButton;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -48,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
 
@@ -60,8 +56,10 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         });
 
-        Button mSignInButton = findViewById(R.id.sign_in_button);
+        mSignInButton = findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener((view) -> attemptLogin());
+
+        // TODO Add a button for registering.
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -108,15 +106,21 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
+            // There was an error; don'HttpPostRequest attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+
+            Map<String, String> credentials = new HashMap<>();
+            credentials.put("username", username);
+            credentials.put("password", password);
+
+            Log.d("HELLO", "Attempting login with " + credentials);
+
+            mAuthTask = HttpClient.Post("https://1d22a682.ngrok.io/rest/login", credentials, this::onLoginSuccess, this::onLoginError);
         }
     }
 
@@ -168,69 +172,32 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Asynchronous login/registration task used to authenticate the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private void onLoginSuccess(HttpResponse httpResponse) {
+        mAuthTask = null;
+        showProgress(false);
 
-        private final String mUsername;
-        private final String mPassword;
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-        UserLoginTask(String username, String password) {
-            mUsername = username;
-            mPassword = password;
-        }
+        // TODO Put user info into the intent as extras using a bundle.
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        startActivity(intent);
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            }
-            catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUsername)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-                // TODO Put user info into the intent as extras using a bundle.
-
-                startActivity(intent);
-
-                // Kill this activity so that the user cannot go back to it using the back button.
-                finish();
-            }
-
-            else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+        // Kill this activity so that the user cannot go back to it using the back button.
+        finish();
     }
+
+    private void onLoginError(HttpResponse httpResponse) {
+        mAuthTask = null;
+        showProgress(false);
+
+        if (httpResponse != null && httpResponse.getStatus() == 401) {
+            mPasswordView.setError(httpResponse.getResponseBody());
+            mPasswordView.requestFocus();
+        }
+
+        // TODO Add toast to display other error messages
+
+    }
+
 }
 

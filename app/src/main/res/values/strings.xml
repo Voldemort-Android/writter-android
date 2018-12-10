@@ -2,13 +2,13 @@
     <string name="app_name">Writter</string>
 
     <!-- Strings related to login -->
+    <string name="login_main_title">Sign in to Writter</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_username">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>
