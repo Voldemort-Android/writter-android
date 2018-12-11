@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(this::navigateToRegistrationActivity);
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mProgressView = findViewById(R.id.progress_spinner);
     }
 
 
@@ -124,7 +124,12 @@ public class LoginActivity extends AppCompatActivity {
 
             Log.d("HELLO", "Attempting login with " + credentials);
 
-            mAuthTask = HttpClient.Post(HttpEndpoints.WRITTER_SERVER_API + "/login", credentials, this::onLoginSuccess, this::onLoginError);
+            mAuthTask = HttpClient.Post(
+                    HttpEndpoints.WRITTER_SERVER_API + "/login",
+                    credentials,
+                    this::onLoginSuccess,
+                    this::onLoginError
+            );
         }
     }
 
@@ -181,12 +186,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
+        // Kill activity stack so that the user cannot go back using the back button.
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         // TODO Put user info into the intent as extras using a bundle.
 
         startActivity(intent);
-
-        // Kill this activity so that the user cannot go back to it using the back button.
-        finish();
     }
 
     private void onLoginError(HttpResponse httpResponse) {
