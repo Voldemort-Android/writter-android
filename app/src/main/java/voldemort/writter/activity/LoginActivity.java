@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setTitle(R.string.title_login);
+        setTitle(R.string.activity_login_title);
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -93,18 +93,18 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.activity_login_error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
+            mUsernameView.setError(getString(R.string.activity_login_error_field_required));
             focusView = mUsernameView;
             cancel = true;
         } else if (!isUsernameValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_username));
+            mUsernameView.setError(getString(R.string.activity_login_error_invalid_username));
             focusView = mUsernameView;
             cancel = true;
         }

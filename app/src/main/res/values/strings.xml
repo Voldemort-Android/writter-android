@@ -1,16 +1,25 @@
 <resources>
     <string name="app_name">Writter</string>
-
-    <!-- Strings related to login -->
-    <string name="title_login">Sign in to Writter</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="action_register">Create an account</string>
-    <string name="action_register_short">Register</string>
-    <string name="error_invalid_username">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="prompt_confirm_password">Verify Password</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_email">Email Address</string>
+
+    <!-- Strings related to login activity -->
+    <string name="activity_login_title">Sign in to Writter</string>
+    <string name="activity_login_action_sign_in">Sign in</string>
+    <string name="activity_login_action_sign_in_short">Sign in</string>
+    <string name="activity_login_action_register">Create an account</string>
+    <string name="activity_login_error_invalid_username">This email address is invalid</string>
+    <string name="activity_login_error_invalid_password">This password is too short</string>
+    <string name="activity_login_error_field_required">This field is required</string>
+
+    <!-- String related to registration activity -->
+    <string name="activity_registration_title">Create a Writter account</string>
+    <string name="activity_registration_action_register">Create account</string>
+    <string name="activity_registration_action_login">Already have an account?</string>
+
     <string name="title_activity_main">MainActivity</string>
 </resources>
