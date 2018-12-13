@@ -1,35 +1,27 @@
 package voldemort.writter.data.model;
 
+import java.util.List;
+import java.util.Date;
+
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 
-import java.util.Date;
-
-@Entity(tableName = "user")
-public class User {
+@Entity(tableName = "rating")
+public class Rating {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private int id;
 
     @NonNull
-    private String username;
+    private User user;
 
     @NonNull
-    private String email;
+    private Story story;
 
     @NonNull
-    @ColumnInfo(name = "first_name")
-    private String firstName;
-
-    @NonNull
-    @ColumnInfo(name = "last_name")
-    private String lastName;
-
-    // Only used for registration
-    private String password;
+    private Double rating;
 
     @NonNull
     private boolean enabled = true;
@@ -39,6 +31,15 @@ public class User {
 
     @NonNull
     private Date modified;
+
+    public Rating(@NonNull User user, @NonNull Story story, @NonNull Double rating, @NonNull boolean enabled, @NonNull Date created, @NonNull Date modified) {
+        this.user = user;
+        this.story = story;
+        this.rating = rating;
+        this.enabled = enabled;
+        this.created = created;
+        this.modified = modified;
+    }
 
     @NonNull
     public int getId() {
@@ -50,47 +51,30 @@ public class User {
     }
 
     @NonNull
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(@NonNull String username) {
-        this.username = username;
-    }
-
-    @NonNull
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NonNull String email) {
-        this.email = email;
+    public void setUser(@NonNull User user) {
+        this.user = user;
     }
 
     @NonNull
-    public String getFirstName() {
-        return firstName;
+    public Story getStory() {
+        return story;
     }
 
-    public void setFirstName(@NonNull String firstName) {
-        this.firstName = firstName;
+    public void setStory(@NonNull Story story) {
+        this.story = story;
     }
 
     @NonNull
-    public String getLastName() {
-        return lastName;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setLastName(@NonNull String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRating(@NonNull Double rating) {
+        this.rating = rating;
     }
 
     @NonNull
