@@ -22,6 +22,7 @@ import voldemort.writter.R;
 import voldemort.writter.http.HttpEndpoints;
 import voldemort.writter.http.client.HttpClient;
 import voldemort.writter.http.client.HttpResponse;
+import voldemort.writter.utils.TokenUtils;
 
 /**
  * A login screen that offers login via username/password.
@@ -39,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // TODO Check if user was already logged in, and redirect them to the main activity.
 
         super.onCreate(savedInstanceState);
 
@@ -67,6 +66,33 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.progress_spinner);
+
+        // Check if user was already logged in, and redirect them to the main activity.
+        String token = TokenUtils.getToken(LoginActivity.this);
+        if (token != null) {
+            validateToken(token);
+        }
+
+    }
+
+    /**
+     * Attempt to validate the user using saved token.
+     */
+    private void validateToken(String token) {
+        if (mAuthTask != null) {
+            return;
+        }
+        showProgress(true);
+        mAuthTask = HttpClient.Post(
+                HttpEndpoints.WRITTER_SERVER_API + "/login/validate",
+                token,
+                this::onLoginSuccess,
+                (view) -> {
+                    mAuthTask = null;
+                    showProgress(false);
+                    TokenUtils.deleteToken(LoginActivity.this);
+                }
+        );
     }
 
 
@@ -189,7 +215,11 @@ public class LoginActivity extends AppCompatActivity {
         // Kill activity stack so that the user cannot go back using the back button.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // TODO Put user info into the intent as extras using a bundle.
+        String token = httpResponse.getResponseBody();
+        Log.d("HELLO", token);
+
+        // Store the token so that other activities can use it.
+        TokenUtils.saveToken(LoginActivity.this, token);
 
         startActivity(intent);
     }
