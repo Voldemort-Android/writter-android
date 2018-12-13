@@ -58,14 +58,13 @@ public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
             }
 
             urlConnection.setRequestMethod("POST");
+            urlConnection.setConnectTimeout(4000);
 
             // Add a request body for the POST request.
+            // This will also automatically open the connection.
             addRequestBody(urlConnection, body);
 
             Log.d("HELLO", "Response Code: " + urlConnection.getResponseCode());
-
-            // Make the request.
-            //urlConnection.connect();
 
             // Try to get response body from URL connection.
             String responseBody = HttpClientUtils.getResponseBody(urlConnection);
@@ -108,7 +107,7 @@ public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
      * @param urlConnection
      * @param data
      */
-    private void addRequestBody(@NonNull HttpURLConnection urlConnection, Object data) {
+    private void addRequestBody(@NonNull HttpURLConnection urlConnection, Object data) throws IOException {
         if (data == null) {
             return;
         }
@@ -129,14 +128,8 @@ public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
             }
         }
 
-        try {
-            OutputStream outputStream = urlConnection.getOutputStream();
-            outputStream.write(requestBody.getBytes());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        OutputStream outputStream = urlConnection.getOutputStream();
+        outputStream.write(requestBody.getBytes());
     }
 
 }

@@ -51,6 +51,8 @@ public class HttpGetRequest extends AsyncTask<Void, Void, HttpResponse> {
                 HttpClientUtils.setHeaders(urlConnection, headers);
             }
 
+            urlConnection.setConnectTimeout(4000);
+
             // Make the request.
             urlConnection.connect();
 
