@@ -144,7 +144,7 @@ public class RegistrationActivity extends AppCompatActivity {
         userDetails.setEmail(email);
         userDetails.setPassword(password);
 
-        mAuthTask = HttpClient.Post(
+        mAuthTask = HttpClient.Put(
                 HttpEndpoints.WRITTER_SERVER_API + "/register",
                 userDetails,
                 this::onRegistrationSuccess,

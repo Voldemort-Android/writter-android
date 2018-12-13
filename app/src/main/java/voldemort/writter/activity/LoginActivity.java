@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if user was already logged in, and redirect them to the main activity.
         String token = TokenUtils.getToken(LoginActivity.this);
-        if (token != null) {
+        if (!TextUtils.isEmpty(token)) {
             validateToken(token);
         }
 
