@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import voldemort.writter.R;
+import voldemort.writter.http.HttpEndpoints;
+import voldemort.writter.http.client.AuthHttpClient;
 import voldemort.writter.utils.TokenUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String token = TokenUtils.getToken(MainActivity.this);
-        Log.d("HELLO", token);
+        AuthHttpClient.Get(
+                MainActivity.this,
+                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
+                (res) -> Log.d("HELLO", res.getResponseBody())
+        );
+
     }
 }

@@ -5,7 +5,12 @@ import android.os.AsyncTask;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * Contains a set of static functions that make asynchronous HTTP calls.
+ */
 public final class HttpClient {
+
+    // We probably won't need most of the overloads in here, but I included them just in case.
 
     private HttpClient() {
 
