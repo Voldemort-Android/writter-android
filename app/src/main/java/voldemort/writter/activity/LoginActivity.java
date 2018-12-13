@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -228,12 +229,18 @@ public class LoginActivity extends AppCompatActivity {
         mAuthTask = null;
         showProgress(false);
 
-        if (httpResponse != null && httpResponse.getStatus() == 401) {
-            mPasswordView.setError(httpResponse.getResponseBody());
-            mPasswordView.requestFocus();
+        if (httpResponse != null) {
+            if (httpResponse.getStatus() == 401) {
+                mPasswordView.setError(httpResponse.getResponseBody());
+                mPasswordView.requestFocus();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), httpResponse.getResponseBody(), Toast.LENGTH_SHORT).show();
+            }
         }
-
-        // TODO Add toast to display other error messages
+        else {
+            Toast.makeText(getApplicationContext(), "An unknown error has occurred", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

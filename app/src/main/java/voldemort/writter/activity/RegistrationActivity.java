@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -212,7 +213,12 @@ public class RegistrationActivity extends AppCompatActivity {
         mAuthTask = null;
         showProgress(false);
 
-        // TODO Add toast to display error messages
+        if (httpResponse != null) {
+            Toast.makeText(getApplicationContext(), httpResponse.getResponseBody(), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "An unknown error has occurred", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void navigateToLoginActivity(View view) {
