@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import voldemort.writter.data.model.User;
 import voldemort.writter.http.HttpEndpoints;
 import voldemort.writter.http.client.HttpClient;
 import voldemort.writter.http.client.HttpResponse;
+import voldemort.writter.utils.TokenUtils;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -196,7 +199,11 @@ public class RegistrationActivity extends AppCompatActivity {
         // Kill activity stack so that the user cannot go back using the back button.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // TODO Put user info into the intent as extras using a bundle.
+        String token = httpResponse.getResponseBody();
+        Log.d("HELLO", token);
+
+        // Store the token so that other activities can use it.
+        TokenUtils.saveToken(RegistrationActivity.this, token);
 
         startActivity(intent);
     }
