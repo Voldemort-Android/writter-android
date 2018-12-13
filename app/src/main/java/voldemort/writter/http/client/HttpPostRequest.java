@@ -17,6 +17,8 @@ import java.util.function.Consumer;
 
 public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
 
+    private final int requestTimeout = 4000;
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     private String url;
@@ -58,7 +60,7 @@ public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
             }
 
             urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(4000);
+            urlConnection.setConnectTimeout(requestTimeout);
 
             // Add a request body for the POST request.
             // This will also automatically open the connection.

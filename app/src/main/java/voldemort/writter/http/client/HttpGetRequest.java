@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 
 public class HttpGetRequest extends AsyncTask<Void, Void, HttpResponse> {
 
+    private final int requestTimeout = 4000;
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     private String url;
@@ -51,7 +53,7 @@ public class HttpGetRequest extends AsyncTask<Void, Void, HttpResponse> {
                 HttpClientUtils.setHeaders(urlConnection, headers);
             }
 
-            urlConnection.setConnectTimeout(4000);
+            urlConnection.setConnectTimeout(requestTimeout);
 
             // Make the request.
             urlConnection.connect();
