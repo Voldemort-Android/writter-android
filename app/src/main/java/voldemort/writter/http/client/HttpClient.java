@@ -84,4 +84,40 @@ public final class HttpClient {
         return postRequest.execute();
     }
 
+    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
+                                                           Object body,
+                                                           Consumer<HttpResponse> callback) {
+
+        return Put(url, body, null, callback, null);
+
+    }
+
+    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
+                                                           Object body,
+                                                           Consumer<HttpResponse> callback,
+                                                           Consumer<HttpResponse> errorCallback) {
+
+        return Put(url, body, null, callback, errorCallback);
+
+    }
+
+    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
+                                                           Object body,
+                                                           Map<String, String> headers,
+                                                           Consumer<HttpResponse> callback) {
+
+        return Put(url, body, headers, callback, null);
+
+    }
+
+    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
+                                                           Object body,
+                                                           Map<String, String> headers,
+                                                           Consumer<HttpResponse> callback,
+                                                           Consumer<HttpResponse> errorCallback) {
+
+        HttpPutRequest putRequest = new HttpPutRequest(url, body, headers, callback, errorCallback);
+        return putRequest.execute();
+    }
+
 }
