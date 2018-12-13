@@ -40,17 +40,6 @@ public class User {
     @NonNull
     private Date modified;
 
-    public User(@NonNull String username, @NonNull String email, @NonNull String firstName, @NonNull String lastName, String password, @NonNull boolean enabled, @NonNull Date created, @NonNull Date modified) {
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.enabled = enabled;
-        this.created = created;
-        this.modified = modified;
-    }
-
     @NonNull
     public int getId() {
         return id;
