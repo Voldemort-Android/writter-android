@@ -21,10 +21,6 @@ import voldemort.writter.utils.TokenUtils;
 
 public class RecommendationsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    private final int pageSize = 10;
-
-    private int lastPage = 1;
-
     private boolean loadingStories = false;
 
     private DrawerLayout mDrawerLayout;
