@@ -5,11 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import voldemort.writter.R;
+import voldemort.writter.RecyclerViewAdapter.StoriesView;
 import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.HttpEndpoints;
 import voldemort.writter.http.client.AuthHttpClient;
@@ -23,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private StoriesFragment mStoriesFragment;
 
+    private StoriesView mStoriesView;
+
     private FloatingActionButton mNewStoryButton;
 
     @Override
@@ -33,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
 
         mNewStoryButton = findViewById(R.id.new_story_fab);
+
+        RecyclerView recyclerView = findViewById(R.id.stories_recyclerview);
+        recyclerView.setAdapter(mStoriesView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // TODO Change this to navigate to New STory activity
         mNewStoryButton.setOnClickListener(this::logout);
@@ -55,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadStories() {
 
-
-
-
+        mStoriesView.mStories.addAll()
     }
 
     // TODO Move this somewhere else

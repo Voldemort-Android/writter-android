@@ -38,6 +38,18 @@ public class Story {
     @NonNull
     private Date modified;
 
+    public Story(@NonNull int id, @NonNull String title, @NonNull String text, @NonNull User author, @NonNull int points, @NonNull int views, @NonNull boolean enabled, @NonNull Date created, @NonNull Date modified) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.author = author;
+        this.points = points;
+        this.views = views;
+        this.enabled = enabled;
+        this.created = created;
+        this.modified = modified;
+    }
+
     @NonNull
     public int getId() {
         return id;
