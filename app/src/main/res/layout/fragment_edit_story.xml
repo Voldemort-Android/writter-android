@@ -51,15 +51,6 @@
                     android:gravity="top"/>
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/create_story_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/create_story_action"
-                android:textStyle="bold" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

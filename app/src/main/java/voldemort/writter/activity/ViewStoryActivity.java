@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -39,6 +37,11 @@ public class ViewStoryActivity extends AppCompatActivity {
         mTextView.setMovementMethod(new ScrollingMovementMethod());
 
         mEditStoryFab = findViewById(R.id.edit_story_fab);
+        mEditStoryFab.setOnClickListener((view) -> {
+            Intent intent = new Intent(this, EditStoryActivity.class);
+            intent.putExtra("id", String.valueOf(mStory.getId()));
+            startActivity(intent);
+        });
 
         addListenerOnRatingBar();
 

@@ -37,6 +37,7 @@
         <activity android:name=".activity.CreateStoryActivity" />
         <activity android:name=".activity.RecommendationsActivity" />
         <activity android:name=".activity.MyStoriesActivity" />
+        <activity android:name=".activity.EditStoryActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,5 @@
 package voldemort.writter.activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,18 +16,20 @@ import voldemort.writter.fragment.EditStoryFragment;
 import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.http.client.HttpResponse;
 
-public class CreateStoryActivity extends AppCompatActivity {
+public class EditStoryActivity extends AppCompatActivity {
 
+    private Story mStory;
+    
     private boolean publishing = false;
 
     private EditStoryFragment mEditStoryFragment;
-    private Button mPublishButton;
+    private Button mUpdateButton;
+    private Button mCancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_story);
-
+        setContentView(R.layout.activity_edit_story);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -34,50 +37,58 @@ public class CreateStoryActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_navigate_before_black);
         actionbar.setTitle(R.string.activity_create_story_title);
 
-        mPublishButton = findViewById(R.id.publish_story_button);
-        mPublishButton.setOnClickListener((view) -> attemptPublish());
+        mUpdateButton = findViewById(R.id.update_story_button);
+        mUpdateButton.setOnClickListener((view) -> attemptUpdate());
+
+        mCancelButton = findViewById(R.id.cancel_update_story_button);
+        mCancelButton.setOnClickListener((view) -> onBackPressed());
 
         mEditStoryFragment = (EditStoryFragment) getSupportFragmentManager().findFragmentById(R.id.edit_story_fragment);
-        mEditStoryFragment.setTitle("Romeo and Juliet");
-        mEditStoryFragment.setText("Two household both ...");
+
+        Long storyId = Long.valueOf(getIntent().getStringExtra("id"));
+        loadStory(storyId);
     }
 
-    private void attemptPublish() {
+    private void loadStory(long id) {
+        StoryHttpService.getStory(id, this::onStoryLoaded);
+    }
+
+    private void onStoryLoaded(Story story) {
+        mStory = story;
+        mEditStoryFragment.setText(story.getTitle());
+        mEditStoryFragment.setText(story.getText());
+    }
+
+    private void attemptUpdate() {
         if (publishing) {
             return;
         }
 
-        Story newStory = mEditStoryFragment.getDataForPublish();
-        if (newStory != null) {
+        Story story = mEditStoryFragment.getDataForPublish();
+        if (story != null) {
+            mStory.setText(story.getText());
+            mStory.setTitle(story.getTitle());
             publishing = true;
-            StoryHttpService.createStory(newStory, this::onPublishSuccess, this::onPublishError);
+            StoryHttpService.updateStory(mStory, this::onUpdateSuccess, this::onUpdateError);
         }
     }
 
-    private void onPublishSuccess(Story story) {
+    private void onUpdateSuccess(Story story) {
         publishing = false;
 
         // Display success message.
-        String successMessage = getResources().getString(R.string.message_publish_success);
-
-        Intent intent = new Intent(this, MyStoriesActivity.class);
-
-        // Kill activity stack so that the user cannot go back using the back button.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-
+        String successMessage = getResources().getString(R.string.message_update_success);
         Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT);
     }
 
-    private void onPublishError(HttpResponse httpResponse) {
+    public void onUpdateError(HttpResponse httpResponse) {
         publishing = false;
-        //showProgress(false);d
 
         if (httpResponse != null) {
             Toast.makeText(getApplicationContext(), httpResponse.getResponseBody(), Toast.LENGTH_SHORT).show();
         }
         else {
-            String failureMessage = getResources().getString(R.string.message_publish_failed);
+            String failureMessage = getResources().getString(R.string.message_update_failed);
             Toast.makeText(getApplicationContext(), failureMessage, Toast.LENGTH_SHORT).show();
         }
 

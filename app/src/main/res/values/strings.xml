@@ -35,8 +35,12 @@
     <string name="story_prompt_title">Title</string>
     <string name="story_prompt_text">Story</string>
     <string name="create_story_action">Publish</string>
+    <string name="update_story_action">Update Story</string>
+    <string name="cancel_update_story_action">Cancel</string>
     <string name="message_publish_success">Published successfully</string>
+    <string name="message_update_success">Saved successfully</string>
     <string name="message_publish_failed">Publish failed</string>
+    <string name="message_update_failed">Save failed</string>
     <string name="discard_changes_dialog_title">Discard Changes?</string>
     <string name="discard_changes_dialog_message">
         Are you sure you want to navigate away from this screen? Any unsaved changes will be lost.
