@@ -23,21 +23,8 @@ import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.utils.TokenUtils;
 
-public class StoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class StoryActivity extends AppCompatActivity {
 
-    private final int pageSize = 20;
-
-    private int lastPage = 0;
-
-    private DrawerLayout mDrawerLayout;
-
-    private NavigationView mNavigationView;
-
-    private StoriesFragment mStoriesFragment;
-
-    private FloatingActionButton mNewStoryButton;
-
-    private ScrollView mScrollView;
 
     private TextView mTitle;
     private TextView mAuthor;
@@ -55,79 +42,90 @@ public class StoryActivity extends AppCompatActivity implements NavigationView.O
         mText.setMovementMethod(new ScrollingMovementMethod());
         mRating = findViewById(R.id.ratingBar2);
 
-        // TODO Change this to navigate to New STory activity
-        mNewStoryButton.setOnClickListener(view -> loadStories());
-//        mNewStoryButton.setOnClickListener(this::logout);
+        Intent intent = getIntent();
 
-        loadStories();
+        mTitle.setText(intent.getStringExtra("Title"));
+        mAuthor.setText(intent.getStringExtra("Author"));
+        mText.setText(intent.getStringExtra("Text"));
 
-    }
-
-
-    private void loadStories() {
-        StoryHttpService.getPaginatedStories(++lastPage, pageSize, mStoriesFragment::onLoadStories);
-    }
-
-    private void refreshStories() {
-        mStoriesFragment.clearStories();
-        lastPage = 0;
-        loadStories();
-    }
-
-    // TODO Move this somewhere else
-    private void logout() {
-
-        // Remove the stored token
-        TokenUtils.deleteToken(StoryActivity.this);
-
-        Intent intent = new Intent(StoryActivity.this, LoginActivity.class);
-
-        // Kill activity stack so that the user cannot go back using the back button.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(intent);
-    }
-
-    private void navigateTo(Class<?> activityClass) {
-        Intent intent = new Intent(StoryActivity.this, activityClass);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (intent.getStringExtra("rating") != null) {
+            int rank = Integer.parseInt(intent.getStringExtra("rating"));
+            mRating.setRating(rank);
         }
-        return super.onOptionsItemSelected(item);
+
+
+
+
+
+//        loadStories();
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
-    }
+//    private void loadStories() {
+//        StoryHttpService.getPaginatedStories(++lastPage, pageSize, mStoriesFragment::onLoadStories);
+//    }
+//
+//    private void refreshStories() {
+//        mStoriesFragment.clearStories();
+//        lastPage = 0;
+//        loadStories();
+//    }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.logout) {
-            logout();
-        }
-        else {
-            if (itemId == R.id.home) {
-                navigateTo(MainActivity.class);
-            }
-        }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    // TODO Move this somewhere else
+//    private void logout() {
+//
+//        // Remove the stored token
+//        TokenUtils.deleteToken(StoryActivity.this);
+//
+//        Intent intent = new Intent(StoryActivity.this, LoginActivity.class);
+//
+//        // Kill activity stack so that the user cannot go back using the back button.
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//
+//        startActivity(intent);
+//    }
+
+//    private void navigateTo(Class<?> activityClass) {
+//        Intent intent = new Intent(StoryActivity.this, activityClass);
+//        startActivity(intent);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                mDrawerLayout.openDrawer(GravityCompat.START);
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.drawer_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        return super.onContextItemSelected(item);
+//    }
+//
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        int itemId = item.getItemId();
+//        if (itemId == R.id.logout) {
+//            logout();
+//        }
+//        else {
+//            if (itemId == R.id.home) {
+//                navigateTo(MainActivity.class);
+//            }
+//        }
+//        mDrawerLayout.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 
 }
