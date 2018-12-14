@@ -81,10 +81,11 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(mContext, StoryActivity.class);
+            Log.d("check title", mStories.get(getAdapterPosition()).getTitle());
             intent.putExtra("Title", mStories.get(getAdapterPosition()).getTitle());
 //            intent.putExtra("Author", mStories.get(getAdapterPosition()).getAuthor().getFirstName());
 //            intent.putExtra("Text", mStories.get(getAdapterPosition()).getText());
-//            Log.d("check title", intent.getStringExtra("Title"));
+            Log.d("check title", intent.getStringExtra("Title"));
 //            Log.d("check author", intent.getStringExtra("Author"));
 //            Log.d("check text", intent.getStringExtra("Text"));
 

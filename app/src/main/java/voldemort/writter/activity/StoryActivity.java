@@ -45,12 +45,13 @@ public class StoryActivity extends AppCompatActivity {
 //        addListenerOnRatingBar();
 
         Intent intent = getIntent();
-
-       if(intent.hasExtra("Title")){
-           mTitle.setText(intent.getStringExtra("Title"));
-           Log.d("Title", mTitle.getText().toString());
-       }
-       else mTitle.setText("NO Title");
+        String test = intent.getStringExtra("Title");
+        Log.d("Title", test);
+        if(intent.hasExtra("Title")){
+//           mTitle.setText(intent.getStringExtra("Title"));
+//           Log.d("Title", mTitle.getText().toString());
+        }
+        else mTitle.setText("NO Title");
 //        mTitle.setText(intent.getStringExtra("Title"));
 //        mAuthor.setText(intent.getStringExtra("Author"));
 //        mText.setText(intent.getStringExtra("Text"));
