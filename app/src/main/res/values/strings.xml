@@ -10,7 +10,8 @@
     <!-- Nav drawer and menus -->
     <string name="nav_drawer_home">Home</string>
     <string name="nav_drawer_recommendations">Recommendations</string>
-    <string name="nav_drawer_create">Create</string>
+    <string name="nav_drawer_my_stories">My Stories</string>
+    <string name="nav_drawer_create_story">Create Story</string>
     <string name="nav_drawer_logout">Sign Out</string>
 
     <!-- Strings related to login activity -->
@@ -38,10 +39,13 @@
     <!-- Story recycler view -->
     <string name="action_load_previous_stories">Load newer stories</string>
     <string name="action_load_next_stories">Load older stories</string>
-    <string name="no_stories">No stories are available</string>
+    <string name="no_results">No stories are available</string>
+    <string name="no_stories">You do have have any stories</string>
     <string name="no_recommendations">You do not have any recommendations</string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="activity_main_title">Writter</string>
+    <string name="activity_recommendations_title">Recommendations</string>
+    <string name="activity_my_stories_title">My Stories</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

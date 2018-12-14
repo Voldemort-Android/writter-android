@@ -10,9 +10,13 @@
             android:icon="@drawable/ic_star_black"
             android:title="@string/nav_drawer_recommendations" />
         <item
+            android:id="@+id/navigate_my_stories"
+            android:icon="@drawable/ic_import_contacts_black"
+            android:title="@string/nav_drawer_my_stories" />
+        <item
             android:id="@+id/navigate_create"
             android:icon="@drawable/ic_note_add_black"
-            android:title="@string/nav_drawer_create" />
+            android:title="@string/nav_drawer_create_story" />
         <item
             android:id="@+id/navigate_logout"
             android:icon="@drawable/ic_exit_to_app_black"

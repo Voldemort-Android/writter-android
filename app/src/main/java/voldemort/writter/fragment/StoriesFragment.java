@@ -69,6 +69,7 @@ public class StoriesFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
             mStories.addAll(stories);
             mAdapter.notifyDataSetChanged();
+            mRecyclerView.smoothScrollToPosition(0);
         }
     }
 

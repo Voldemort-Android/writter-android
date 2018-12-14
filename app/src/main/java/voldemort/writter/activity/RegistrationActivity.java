@@ -203,7 +203,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d("HELLO", token);
 
         // Store the token so that other activities can use it.
-        TokenUtils.saveToken(RegistrationActivity.this, token);
+        TokenUtils.saveToken(token);
 
         startActivity(intent);
     }

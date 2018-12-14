@@ -123,7 +123,7 @@ public final class AuthHttpClient {
     }
 
     private static Map<String, String> addAuthorizationHeader(Map<String, String> headers) {
-        String token = TokenUtils.getToken(WritterApplication.getAppContext());
+        String token = TokenUtils.getToken();
         if (token != null) {
             if (headers == null) {
                 headers = new HashMap<>();

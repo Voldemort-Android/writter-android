@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.progress_spinner);
 
         // Check if user was already logged in, and redirect them to the main activity.
-        String token = TokenUtils.getToken(LoginActivity.this);
+        String token = TokenUtils.getToken();
         if (!TextUtils.isEmpty(token)) {
             validateToken(token);
         }
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 (view) -> {
                     mAuthTask = null;
                     showProgress(false);
-                    TokenUtils.deleteToken(LoginActivity.this);
+                    TokenUtils.deleteToken();
                 }
         );
     }
@@ -220,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("HELLO", token);
 
         // Store the token so that other activities can use it.
-        TokenUtils.saveToken(LoginActivity.this, token);
+        TokenUtils.saveToken(token);
 
         startActivity(intent);
     }
