@@ -51,6 +51,11 @@ public class ViewStoryActivity extends AppCompatActivity {
 
         addListenerOnRatingBar();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Long storyId = Long.valueOf(getIntent().getStringExtra("id"));
         loadStory(storyId);
     }
