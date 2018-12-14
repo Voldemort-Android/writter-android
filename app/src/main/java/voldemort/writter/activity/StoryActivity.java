@@ -28,6 +28,7 @@ import voldemort.writter.utils.TokenUtils;
 public class StoryActivity extends AppCompatActivity {
 
     private int id;
+    private Story main_story = new Story();
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
@@ -73,6 +74,7 @@ public class StoryActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
 
+
                 //Meathod to change the rating
 
             }
@@ -88,7 +90,8 @@ public class StoryActivity extends AppCompatActivity {
     private void getStoryText(int id) {
 //        Story storyHolder = new Story();
         StoryHttpService.getStory(id, story -> mText.setText(story.getText()));
-
+//        StoryHttpService.getStory(id, story -> this.main_story = story);
+//        mText.setText(this.main_story.getText());
 //        return "Whats a Story with You";
     }
 
