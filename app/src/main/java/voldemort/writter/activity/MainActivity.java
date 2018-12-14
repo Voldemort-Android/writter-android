@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private final int pageSize = 20;
 
-    private int lastPage = 0;
+    private int lastPage = 1;
 
     private DrawerLayout mDrawerLayout;
 
@@ -43,29 +43,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private StoriesFragment mStoriesFragment;
 
-//    private FloatingActionButton mNewStoryButton;
+    private FloatingActionButton mNewStoryButton;
 
     private ScrollView mScrollView;
 
     private ProgressBar mProgressBar;
 
-    private RecyclerView mRecyclerView;
-
-    private StoryAdapter mAdapter;
-
-    private ArrayList<Story> repos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mProgressBar = (ProgressBar) findViewById(R.id.progress);
-        mRecyclerView = (RecyclerView)findViewById(R.id.story_recyclerview);
-        mAdapter = new StoryAdapter(this, repos);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        getRecommendedStories();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,38 +68,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.setCheckedItem(R.id.home);
 
+        mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
 
-//        mNewStoryButton = findViewById(R.id.new_story_fab);
 
         mScrollView = findViewById(R.id.scroll);
 //
+        //mNewStoryButton = findViewById(R.id.new_story_fab);
 //        // TODO Change this to navigate to New STory activity
 //        mNewStoryButton.setOnClickListener(view -> loadStories());
 ////        mNewStoryButton.setOnClickListener(this::logout);
 
+        loadStories();
     }
 
-    private void getAllStories() {
-        StoryHttpService.getAllStories(this::populateRecyclerView);
-    }
-
-    private void getRecommendedStories() {
-        StoryHttpService.getRecommendedStories(this::populateRecyclerView);
-    }
-
-    public void populateRecyclerView(List<Story> stories){
-        if (stories != null && stories.isEmpty()) { getAllStories(); }
-        mAdapter.mStories.addAll(stories);
-        mAdapter.notifyDataSetChanged();
-    }
+//    private void getAllStories() {
+//        StoryHttpService.getAllStories(this::populateRecyclerView);
+//    }
+//
+//    private void getRecommendedStories() {
+//        StoryHttpService.getRecommendedStories(mStoriesFragment::onLoadStories);
+//    }
 
     private void loadStories() {
-        StoryHttpService.getPaginatedStories(++lastPage, pageSize, mStoriesFragment::onLoadStories);
+        StoryHttpService.getPaginatedStories(lastPage, pageSize, mStoriesFragment::onLoadStories);
+    }
+
+    private void loadOlderStories() {
+        lastPage++;
+        loadStories();
+    }
+
+    private void loadNewerStories() {
+        if (lastPage <= 1) {
+            return;
+        }
+        lastPage--;
+        loadStories();
     }
 
     private void refreshStories() {
-        mStoriesFragment.clearStories();
-        lastPage = 0;
+        lastPage = 1;
         loadStories();
     }
 

@@ -3,6 +3,8 @@ package voldemort.writter.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +16,22 @@ import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
 import voldemort.writter.R;
+import voldemort.writter.activity.StoryAdapter;
 import voldemort.writter.data.model.Story;
 
 
 public class StoriesFragment extends Fragment {
 
-    private TextView asdf;
-    private RatingBar ratingBar;
-    public int count;
+    private final List<Story> mStories = new ArrayList<>();
 
-    private LinkedHashSet<Story> mStories = new LinkedHashSet<>();
+    private RecyclerView mRecyclerView;
+
+    private StoryAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,43 +39,19 @@ public class StoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stories, container, false);
 
-        asdf = view.findViewById(R.id.test_text);
-        asdf.setMovementMethod(new ScrollingMovementMethod());
-        asdf.setText("WTF 123");
-        count = 0;
-        ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
-        addListenerOnRatingBar();
+        mRecyclerView = view.findViewById(R.id.story_recyclerview);
+        mAdapter = new StoryAdapter(view.getContext(), mStories);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         return view;
     }
 
     public void onLoadStories(List<Story> stories) {
-        mStories.addAll(stories);
-        StringBuilder sb = new StringBuilder();
-        mStories.forEach(story -> sb.append(story.getTitle() + " - " + story.getId()).append("\n"));
-        asdf.setText(sb.toString());
-    }
-    public String getText() {
-        return asdf.getText().toString();
-    }
-
-    public void clearStories() {
         mStories.clear();
+        mStories.addAll(stories);
+        mAdapter.notifyDataSetChanged();
     }
 
-
-    public void addListenerOnRatingBar() {
-
-        //if rating value is changed,
-        //display the current rating value in the result (textview) automatically
-        ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
-            public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser) {
-
-                Log.d("yas", ""+count++ );
-
-            }
-        });
-    }
 
 }

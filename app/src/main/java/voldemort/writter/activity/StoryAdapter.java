@@ -15,12 +15,15 @@ import voldemort.writter.R;
 import voldemort.writter.data.model.Story;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder>{
-    Context mContext;
-    ArrayList<Story> mStories;
 
-    public StoryAdapter(Context context, ArrayList<Story> stories){
+    private Context mContext;
+
+    private final List<Story> mStories;
+
+    public StoryAdapter(Context context, List<Story> stories){
         this.mContext = context;
         this.mStories = stories;
     }
@@ -47,33 +50,25 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
     }
 
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView title;
-        TextView username;
-        TextView views;
-        String sendTitle = "";
-        String sendAuthor = "";
-        String sendText = "";
-        int sendRank = 0;
+        private TextView title;
+        private TextView username;
+        private TextView views;
 
         public StoryHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            username = (TextView) itemView.findViewById(R.id.username);
-            views = (TextView) itemView.findViewById(R.id.views);
+            title = itemView.findViewById(R.id.title);
+            username = itemView.findViewById(R.id.username);
+            views = itemView.findViewById(R.id.views);
         }
 
-        void bind(final int listIndex) {
-            title.setText(mStories.get(listIndex).getTitle());
-            views.setText("" + mStories.get(listIndex).getViews());
-            String usernameText = mStories.get(listIndex).getAuthor().getUsername();
+        private void bind(final int listIndex) {
+            Story story = mStories.get(listIndex);
+            title.setText(story.getTitle());
+            views.setText(story.getViews() + "");
+            String usernameText = story.getAuthor().getUsername();
             usernameText += " • ";
-            usernameText += mStories.get(listIndex).getCreated();
+            usernameText += story.getCreated();
             username.setText(usernameText);
-
-            sendTitle = mStories.get(listIndex).getTitle();
-            sendAuthor = mStories.get(listIndex).getAuthor().getFirstName();
-            sendText = mStories.get(listIndex).getText();
-//            sendRank = mStories.get(listIndex).getAuthor().;
 
             itemView.setOnClickListener(this);
         }

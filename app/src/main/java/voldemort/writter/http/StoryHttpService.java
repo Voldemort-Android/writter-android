@@ -134,6 +134,13 @@ public final class StoryHttpService {
         );
     }
 
+//    public static void incrementViews(Long storyId, Consumer callback, Consumer<HttpResponse> errorCallback) {
+//        AuthHttpClient.Post(
+//                STORY_ENDPOINT + "/update-views/" + storyId,
+//                (res)
+//        )
+//    }
+
     private static ObjectMapper getMapper() {
         if (mapper == null) {
             mapper = WritterApplication.getMapper();
