@@ -3,6 +3,7 @@ package voldemort.writter;
 import android.app.Application;
 import android.content.Context;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WritterApplication extends Application {
@@ -15,6 +16,9 @@ public class WritterApplication extends Application {
     public void onCreate() {
         super.onCreate();
         WritterApplication.context = getApplicationContext();
+
+        mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public static Context getAppContext() {
