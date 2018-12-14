@@ -90,6 +90,8 @@ public class StoryActivity extends AppCompatActivity {
     private void getStoryText(int id) {
 //        Story storyHolder = new Story();
         StoryHttpService.getStory(id, story -> mText.setText(story.getText()));
+        StoryHttpService.getStory(id, story -> this.main_story = story);
+        
 //        StoryHttpService.getStory(id, story -> this.main_story = story);
 //        mText.setText(this.main_story.getText());
 //        return "Whats a Story with You";
