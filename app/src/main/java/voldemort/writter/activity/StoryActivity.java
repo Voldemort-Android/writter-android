@@ -52,6 +52,7 @@ public class StoryActivity extends AppCompatActivity {
         mTitle.setText(intent.getStringExtra("Title"));
         mAuthor.setText(intent.getStringExtra("Author"));
         getStoryText(id);
+
 //        loadStories();
 
     }

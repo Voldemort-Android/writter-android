@@ -87,7 +87,7 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
             Log.d("check title", intent.getStringExtra("Title"));
             Log.d("check author", intent.getStringExtra("Author"));
             Log.d("check id", intent.getStringExtra("Id"));
-//
+
             mContext.startActivity(intent);
         }
     }
