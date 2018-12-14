@@ -73,6 +73,18 @@ public final class StoryHttpService {
         );
     }
 
+    public static void getRecommendedStories(Consumer<List<Story>> callback) {
+        getRecommendedStories(callback, null);
+    }
+
+    public static void getRecommendedStories(Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Get(
+                STORY_ENDPOINT + "/recommended",
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
+        );
+    }
+
     public static void getRecommendedStories(Long userId, Consumer<List<Story>> callback) {
         getRecommendedStories(userId, callback, null);
     }
