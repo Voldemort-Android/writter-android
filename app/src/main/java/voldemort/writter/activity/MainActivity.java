@@ -9,24 +9,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import voldemort.writter.R;
-import voldemort.writter.data.model.Story;
 import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.utils.TokenUtils;
@@ -66,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mNavigationView.setCheckedItem(R.id.home);
+        mNavigationView.setCheckedItem(R.id.navigate_home);
 
         mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
 
@@ -133,10 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.create:
+            case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -158,14 +145,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.logout) {
+        if (itemId == R.id.navigate_logout) {
             logout();
         }
         else {
-            if (itemId == R.id.home) {
+            if (itemId == R.id.navigate_home) {
                 navigateTo(MainActivity.class);
             }
-            if (itemId == R.id.create) {
+            if (itemId == R.id.navigate_create) {
                 navigateTo(CreateStoryActivity.class);
             }
         }
