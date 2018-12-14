@@ -46,20 +46,21 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView title;
         TextView username;
+        TextView views;
 
         public StoryHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             username = (TextView) itemView.findViewById(R.id.username);
+            views = (TextView) itemView.findViewById(R.id.views);
         }
 
         void bind(final int listIndex) {
             title.setText(mStories.get(listIndex).getTitle());
+            views.setText("" + mStories.get(listIndex).getViews());
             String usernameText = mStories.get(listIndex).getAuthor().getUsername();
-            usernameText += " • points: ";
-            usernameText += mStories.get(listIndex).getPoints();
-            usernameText += " • views: ";
-            usernameText += mStories.get(listIndex).getViews();
+            usernameText += " • ";
+            usernameText += mStories.get(listIndex).getCreated();
             username.setText(usernameText);
             itemView.setOnClickListener(this);
         }
