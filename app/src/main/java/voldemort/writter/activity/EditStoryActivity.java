@@ -79,6 +79,9 @@ public class EditStoryActivity extends AppCompatActivity {
         // Display success message.
         String successMessage = getResources().getString(R.string.message_update_success);
         Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT).show();
+
+        mEditStoryFragment.setTitle(story.getTitle());
+        mEditStoryFragment.setText(story.getText());
     }
 
     public void onUpdateError(HttpResponse httpResponse) {

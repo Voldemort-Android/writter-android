@@ -22,7 +22,9 @@ public class ViewStoryActivity extends AppCompatActivity {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 
-    private Story mStory;
+    private Long storyId;
+
+    private boolean loadingStory = false;
 
     private TextView mTitleView;
     private TextView mInfoView;
@@ -45,18 +47,20 @@ public class ViewStoryActivity extends AppCompatActivity {
         mEditStoryFab = findViewById(R.id.edit_story_fab);
         mEditStoryFab.setOnClickListener((view) -> {
             Intent intent = new Intent(this, EditStoryActivity.class);
-            intent.putExtra("id", String.valueOf(mStory.getId()));
+            intent.putExtra("id", String.valueOf(storyId));
             startActivity(intent);
         });
 
         addListenerOnRatingBar();
+
+        storyId = Long.valueOf(getIntent().getStringExtra("id"));
+        StoryHttpService.incrementViews(storyId, () -> loadStory(storyId));
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Long storyId = Long.valueOf(getIntent().getStringExtra("id"));
         loadStory(storyId);
     }
 
@@ -86,13 +90,16 @@ public class ViewStoryActivity extends AppCompatActivity {
     }
 
     private void loadStory(long id) {
-        StoryHttpService.incrementViews(id, () -> {
-            StoryHttpService.getStory(id, this::onStoryLoaded);
-        });
+        if (loadingStory) {
+            return;
+        }
+        loadingStory = true;
+        StoryHttpService.getStory(id, this::onStoryLoaded);
     }
 
     private void onStoryLoaded(Story story) {
-        mStory = story;
+        loadingStory = false;
+
         User author = story.getAuthor();
 
         mTitleView.setText(story.getTitle());
