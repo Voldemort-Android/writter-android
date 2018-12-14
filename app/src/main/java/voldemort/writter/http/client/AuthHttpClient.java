@@ -1,25 +1,30 @@
 package voldemort.writter.http.client;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import voldemort.writter.WritterApplication;
+import voldemort.writter.utils.TokenUtils;
+
 /**
  * Contains a set of static functions that make asynchronous HTTP calls.
+ * The authorization token is automatically added to each request (if available).
+ * Only use this class if authentication is required for the request.
  */
-public final class HttpClient {
+public final class AuthHttpClient {
 
-    // We probably won't need most of the overloads in here, but I included them just in case.
-
-    private HttpClient() {
+    private AuthHttpClient() {
 
     }
 
     public static AsyncTask<Void, Void, HttpResponse> Get(String url,
                                                           Consumer<HttpResponse> callback) {
 
-            return Get(url, null, callback, null);
+        return HttpClient.Get(url, addAuthorizationHeader(null), callback);
 
     }
 
@@ -27,7 +32,7 @@ public final class HttpClient {
                                                           Consumer<HttpResponse> callback,
                                                           Consumer<HttpResponse> errorCallback) {
 
-        return Get(url, null, callback, errorCallback);
+        return HttpClient.Get(url, addAuthorizationHeader(null), callback, errorCallback);
 
     }
 
@@ -35,7 +40,7 @@ public final class HttpClient {
                                                           Map<String, String> headers,
                                                           Consumer<HttpResponse> callback) {
 
-        return Get(url, headers, callback, null);
+        return HttpClient.Get(url, addAuthorizationHeader(headers), callback);
 
     }
 
@@ -44,15 +49,14 @@ public final class HttpClient {
                                                           Consumer<HttpResponse> callback,
                                                           Consumer<HttpResponse> errorCallback) {
 
-        HttpGetRequest getRequest = new HttpGetRequest(url, headers, callback, errorCallback);
-        return getRequest.execute();
+        return HttpClient.Get(url, addAuthorizationHeader(headers), callback, errorCallback);
     }
 
     public static AsyncTask<Void, Void, HttpResponse> Post(String url,
                                                            Object body,
                                                            Consumer<HttpResponse> callback) {
 
-        return Post(url, body, null, callback, null);
+        return HttpClient.Post(url, body, addAuthorizationHeader(null), callback);
 
     }
 
@@ -61,7 +65,7 @@ public final class HttpClient {
                                                            Consumer<HttpResponse> callback,
                                                            Consumer<HttpResponse> errorCallback) {
 
-        return Post(url, body, null, callback, errorCallback);
+        return HttpClient.Post(url, body, addAuthorizationHeader(null), callback, errorCallback);
 
     }
 
@@ -70,7 +74,7 @@ public final class HttpClient {
                                                            Map<String, String> headers,
                                                            Consumer<HttpResponse> callback) {
 
-        return Post(url, body, headers, callback, null);
+        return HttpClient.Post(url, body, addAuthorizationHeader(headers), callback);
 
     }
 
@@ -80,44 +84,54 @@ public final class HttpClient {
                                                            Consumer<HttpResponse> callback,
                                                            Consumer<HttpResponse> errorCallback) {
 
-        HttpPostRequest postRequest = new HttpPostRequest(url, body, headers, callback, errorCallback);
-        return postRequest.execute();
+        return HttpClient.Post(url, body, addAuthorizationHeader(headers), callback, errorCallback);
     }
 
     public static AsyncTask<Void, Void, HttpResponse> Put(String url,
-                                                           Object body,
-                                                           Consumer<HttpResponse> callback) {
+                                                          Object body,
+                                                          Consumer<HttpResponse> callback) {
 
-        return Put(url, body, null, callback, null);
-
-    }
-
-    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
-                                                           Object body,
-                                                           Consumer<HttpResponse> callback,
-                                                           Consumer<HttpResponse> errorCallback) {
-
-        return Put(url, body, null, callback, errorCallback);
+        return HttpClient.Put(url, body, addAuthorizationHeader(null), callback);
 
     }
 
     public static AsyncTask<Void, Void, HttpResponse> Put(String url,
-                                                           Object body,
-                                                           Map<String, String> headers,
-                                                           Consumer<HttpResponse> callback) {
+                                                          Object body,
+                                                          Consumer<HttpResponse> callback,
+                                                          Consumer<HttpResponse> errorCallback) {
 
-        return Put(url, body, headers, callback, null);
+        return HttpClient.Put(url, body, addAuthorizationHeader(null), callback, errorCallback);
 
     }
 
     public static AsyncTask<Void, Void, HttpResponse> Put(String url,
-                                                           Object body,
-                                                           Map<String, String> headers,
-                                                           Consumer<HttpResponse> callback,
-                                                           Consumer<HttpResponse> errorCallback) {
+                                                          Object body,
+                                                          Map<String, String> headers,
+                                                          Consumer<HttpResponse> callback) {
 
-        HttpPutRequest putRequest = new HttpPutRequest(url, body, headers, callback, errorCallback);
-        return putRequest.execute();
+        return HttpClient.Put(url, body, addAuthorizationHeader(headers), callback);
+
     }
+
+    public static AsyncTask<Void, Void, HttpResponse> Put(String url,
+                                                          Object body,
+                                                          Map<String, String> headers,
+                                                          Consumer<HttpResponse> callback,
+                                                          Consumer<HttpResponse> errorCallback) {
+
+        return HttpClient.Put(url, body, addAuthorizationHeader(headers), callback, errorCallback);
+    }
+
+    private static Map<String, String> addAuthorizationHeader(Map<String, String> headers) {
+        String token = TokenUtils.getToken(WritterApplication.getAppContext());
+        if (token != null) {
+            if (headers == null) {
+                headers = new HashMap<>();
+            }
+            headers.put("Authorization", token);
+        }
+        return headers;
+    }
+
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity(tableName = "story")
 public class Story {
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private int id;
@@ -20,10 +21,7 @@ public class Story {
     private String text;
 
     @NonNull
-    private List<User> authors;
-
-    @NonNull
-    private List<Tag> tags;
+    private User author;
 
     @NonNull
     private int points = 0;
@@ -40,16 +38,13 @@ public class Story {
     @NonNull
     private Date modified;
 
-    public Story(@NonNull String title, @NonNull String text, @NonNull List<User> authors, @NonNull List<Tag> tags, @NonNull int points, @NonNull int views, @NonNull boolean enabled, @NonNull Date created, @NonNull Date modified) {
-        this.title = title;
-        this.text = text;
-        this.authors = authors;
-        this.tags = tags;
-        this.points = points;
-        this.views = views;
-        this.enabled = enabled;
-        this.created = created;
-        this.modified = modified;
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
     }
 
     @NonNull
@@ -71,21 +66,12 @@ public class Story {
     }
 
     @NonNull
-    public List<User> getAuthors() {
-        return authors;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthors(@NonNull List<User> authors) {
-        this.authors = authors;
-    }
-
-    @NonNull
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(@NonNull List<Tag> tags) {
-        this.tags = tags;
+    public void setAuthor(@NonNull User author) {
+        this.author = author;
     }
 
     @NonNull
