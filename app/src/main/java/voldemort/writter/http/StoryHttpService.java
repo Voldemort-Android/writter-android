@@ -134,12 +134,31 @@ public final class StoryHttpService {
         );
     }
 
-//    public static void incrementViews(Long storyId, Consumer callback, Consumer<HttpResponse> errorCallback) {
-//        AuthHttpClient.Post(
-//                STORY_ENDPOINT + "/update-views/" + storyId,
-//                (res)
-//        )
-//    }
+    public static void incrementViews(Long storyId, Runnable callback) {
+        incrementViews(storyId, callback, null);
+    }
+
+    public static void incrementViews(Long storyId, Runnable callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Post(
+                STORY_ENDPOINT + "/update-views/" + storyId,
+                null,
+                (res) -> callback.run(),
+                errorCallback
+        );
+    }
+
+    public static void rateStory(Long storyId, Double score, Runnable callback) {
+        rateStory(storyId, score, callback, null);
+    }
+
+    public static void rateStory(Long storyId, Double score, Runnable callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Post(
+                STORY_ENDPOINT + storyId + "/rate/" + score,
+                null,
+                (res) -> callback.run(),
+                errorCallback
+        );
+    }
 
     private static ObjectMapper getMapper() {
         if (mapper == null) {

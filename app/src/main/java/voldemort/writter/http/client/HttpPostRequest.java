@@ -64,7 +64,14 @@ public class HttpPostRequest extends AsyncTask<Void, Void, HttpResponse> {
 
             // Add a request body for the POST request.
             // This will also automatically open the connection.
-            addRequestBody(urlConnection, body);
+            if (body != null) {
+                addRequestBody(urlConnection, body);
+            }
+
+            // If there is no body, then manually open the connection.
+            else {
+                urlConnection.connect();
+            }
 
             Log.d("HELLO", "Response Code: " + urlConnection.getResponseCode());
 
