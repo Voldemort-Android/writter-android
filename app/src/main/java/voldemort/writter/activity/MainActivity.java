@@ -14,6 +14,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import voldemort.writter.R;
 import voldemort.writter.fragment.StoriesFragment;
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private StoriesFragment mStoriesFragment;
 
     private FloatingActionButton mNewStoryButton;
+
+    private ScrollView mScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +62,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNewStoryButton = findViewById(R.id.new_story_fab);
 
+        mScrollView = findViewById(R.id.scroll);
+
         // TODO Change this to navigate to New STory activity
         mNewStoryButton.setOnClickListener(view -> loadStories());
 //        mNewStoryButton.setOnClickListener(this::logout);
 
         loadStories();
 
+//        AuthHttpClient.Get(
+//                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
+//                (res) -> {
+//                    mStoriesFragment.setText(res.getResponseBody());
+//                    Log.d("HELLO", res.getResponseBody());
+//                },
+//                (err) -> {
+//                    Log.d("HELLO", err.toString());
+//                }
+//        );
     }
 
 

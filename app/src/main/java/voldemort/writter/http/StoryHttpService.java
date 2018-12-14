@@ -1,11 +1,18 @@
 package voldemort.writter.http;
 
+import android.util.Log;
+
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -42,6 +49,37 @@ public final class StoryHttpService {
                 },
                 errorCallback
         );
+    }
+
+    public static ArrayList<Integer> getStoryIds() {
+        ArrayList<Integer> idArray = new ArrayList<>();
+        AuthHttpClient.Get(
+                STORY_ENDPOINT,
+                (res) -> {
+                    try {
+//
+                        JSONObject oneStory;
+                        JSONArray storiesFromRedArray;
+                        String idValue;
+
+                        try {
+                            storiesFromRedArray = new JSONArray(res.getResponseBody());
+                            for (int i = 0; i < storiesFromRedArray.length(); i++) {
+                                oneStory = (JSONObject) storiesFromRedArray.get(i);
+                                idValue = oneStory.getString("id");
+                                idArray.add(Integer.parseInt(idValue));
+                            }
+                            Log.d("IDs", idArray.toString());
+                        } catch (JSONException e) {
+                            Log.e("MY bad", e.toString());
+                        }
+                    }
+                    catch ( Error e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+        return idArray;
     }
 
     public static void getPaginatedStories(int page, int limit, Consumer<List<Story>> callback) {
