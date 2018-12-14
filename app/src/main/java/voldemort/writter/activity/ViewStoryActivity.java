@@ -2,44 +2,48 @@ package voldemort.writter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import voldemort.writter.R;
 import voldemort.writter.data.model.Story;
 import voldemort.writter.data.model.User;
 import voldemort.writter.http.StoryHttpService;
+import voldemort.writter.utils.TokenUtils;
 
 public class ViewStoryActivity extends AppCompatActivity {
 
-    private int id;
-
-    private Story mStory = new Story();
+    private Story mStory;
 
     private TextView mTitleView;
     private TextView mAuthor;
     private TextView mTextView;
     private RatingBar mRatingBar;
+    private FloatingActionButton mEditStoryFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.story_layout);
+        setContentView(R.layout.activity_view_story);
 
         mTitleView = findViewById(R.id.title_of_story);
         mAuthor = findViewById(R.id.author_of_story);
         mTextView = findViewById(R.id.text_of_story);
         mTextView.setMovementMethod(new ScrollingMovementMethod());
 
+        mEditStoryFab = findViewById(R.id.edit_story_fab);
+
         addListenerOnRatingBar();
 
-        Intent intent = getIntent();
-
-        Long storyId = Long.valueOf(intent.getStringExtra("id"));
+        Long storyId = Long.valueOf(getIntent().getStringExtra("id"));
         loadStory(storyId);
-
     }
 
     public void addListenerOnRatingBar() {
@@ -80,6 +84,15 @@ public class ViewStoryActivity extends AppCompatActivity {
 
         User author = story.getAuthor();
         mAuthor.setText(author.getUsername() + " - " + author.getFirstName() + " " + author.getLastName());
+
+        // Enable the edit button if its the current user's own story.
+        User user = TokenUtils.getCurrentUser();
+        if (user != null && Objects.equals(user.getId(), author.getId())) {
+            mEditStoryFab.show();
+        }
+        else {
+            mEditStoryFab.hide();
+        }
     }
 
 }
