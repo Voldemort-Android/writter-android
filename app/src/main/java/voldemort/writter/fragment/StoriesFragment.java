@@ -35,9 +35,9 @@ public class StoriesFragment extends Fragment {
     private final List<Story> mStories = new ArrayList<>();
 
     private ProgressBar mProgressView;
-
+    private View mResultsContainer;
+    private TextView mNoStoriesMessage;
     private RecyclerView mRecyclerView;
-
     private StoryAdapter mAdapter;
 
     @Override
@@ -47,6 +47,8 @@ public class StoriesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stories, container, false);
 
         mProgressView = view.findViewById(R.id.progress_spinner);
+        mResultsContainer = view.findViewById(R.id.story_results_container);
+        mNoStoriesMessage = view.findViewById(R.id.message_no_stories);
 
         mRecyclerView = view.findViewById(R.id.story_recyclerview);
         mAdapter = new StoryAdapter(view.getContext(), mStories);
@@ -58,8 +60,20 @@ public class StoriesFragment extends Fragment {
 
     public void onLoadStories(List<Story> stories) {
         mStories.clear();
-        mStories.addAll(stories);
-        mAdapter.notifyDataSetChanged();
+        if (stories.isEmpty()) {
+            mNoStoriesMessage.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
+        else {
+            mNoStoriesMessage.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mStories.addAll(stories);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setNoResultsMessage(String message) {
+        mNoStoriesMessage.setText(message);
     }
 
     public void showPreviousButton(Runnable callback) {
@@ -90,12 +104,12 @@ public class StoriesFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mRecyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mRecyclerView.animate().setDuration(shortAnimTime).alpha(
+            mResultsContainer.setVisibility(show ? View.GONE : View.VISIBLE);
+            mResultsContainer.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mRecyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mResultsContainer.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -111,7 +125,7 @@ public class StoriesFragment extends Fragment {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mRecyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mResultsContainer.setVisibility(show ? View.GONE : View.VISIBLE);
         }
 
     }

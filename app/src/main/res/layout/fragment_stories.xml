@@ -11,13 +11,29 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="64dp"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/story_recyclerview"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/story_results_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/message_no_stories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16sp"
+            android:text="@string/no_stories"
+            android:gravity="center"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/story_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

@@ -6,8 +6,12 @@
             android:icon="@drawable/ic_home_black"
             android:title="@string/nav_drawer_home" />
         <item
+            android:id="@+id/navigate_recommended"
+            android:icon="@drawable/ic_star_black"
+            android:title="@string/nav_drawer_recommendations" />
+        <item
             android:id="@+id/navigate_create"
-            android:icon="@drawable/ic_create_story_black"
+            android:icon="@drawable/ic_note_add_black"
             android:title="@string/nav_drawer_create" />
         <item
             android:id="@+id/navigate_logout"

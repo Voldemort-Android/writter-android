@@ -13,15 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
 
 import voldemort.writter.R;
 import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.utils.TokenUtils;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class RecommendationsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private final int pageSize = 10;
 
@@ -34,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView mNavigationView;
 
     private StoriesFragment mStoriesFragment;
-
-    private FloatingActionButton mNewStoryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,67 +48,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mNavigationView.setCheckedItem(R.id.navigate_home);
+        mNavigationView.setCheckedItem(R.id.navigate_recommended);
 
         mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
-        mStoriesFragment.setNoResultsMessage(getResources().getString(R.string.no_stories));
+        mStoriesFragment.setNoResultsMessage(getResources().getString(R.string.no_recommendations));
 
-        mNewStoryButton = findViewById(R.id.new_story_fab);
-        mNewStoryButton.setOnClickListener(view -> loadStories());
-        mNewStoryButton.setOnClickListener((view) -> navigateTo(CreateStoryActivity.class));
-
-        // Load stories, then show the next button to load older stories.
-        loadStories();
-        mStoriesFragment.showNextButton(this::loadOlderStories);
+        loadRecommendedStories();
 
     }
 
-    private void loadStories() {
+    private void loadRecommendedStories() {
         if (loadingStories) {
             return;
         }
         loadingStories = true;
         mStoriesFragment.showProgress(true);
-        StoryHttpService.getPaginatedStories(lastPage, pageSize, (stories) -> {
+        StoryHttpService.getRecommendedStories((stories) -> {
             mStoriesFragment.onLoadStories(stories);
             mStoriesFragment.showProgress(false);
             loadingStories = false;
         });
-
-        // Show hide the button to load newer stories.
-        if (lastPage == 1) {
-            mStoriesFragment.hidePreviousButton();
-        }
-        else {
-            mStoriesFragment.showPreviousButton(this::loadNewerStories);
-        }
-    }
-
-    private void loadOlderStories() {
-        lastPage++;
-        loadStories();
-    }
-
-    private void loadNewerStories() {
-        if (lastPage <= 1) {
-            return;
-        }
-        lastPage--;
-        loadStories();
     }
 
     private void refreshStories() {
-        lastPage = 1;
-        loadStories();
+        loadRecommendedStories();
     }
 
     // TODO Move this somewhere else
     private void logout() {
 
         // Remove the stored token
-        TokenUtils.deleteToken(MainActivity.this);
+        TokenUtils.deleteToken(RecommendationsActivity.this);
 
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(RecommendationsActivity.this, LoginActivity.class);
 
         // Kill activity stack so that the user cannot go back using the back button.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -121,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void navigateTo(Class<?> activityClass) {
-        Intent intent = new Intent(MainActivity.this, activityClass);
+        Intent intent = new Intent(RecommendationsActivity.this, activityClass);
         startActivity(intent);
     }
 
@@ -154,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             logout();
         }
         else {
-            if (itemId == R.id.navigate_recommended) {
-                navigateTo(RecommendationsActivity.class);
+            if (itemId == R.id.navigate_home) {
+                navigateTo(MainActivity.class);
             }
             if (itemId == R.id.navigate_create) {
                 navigateTo(CreateStoryActivity.class);
@@ -164,6 +132,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }

@@ -25,15 +25,17 @@
         </activity>
         <activity android:name=".activity.RegistrationActivity" />
 
-        <!--<activity android:name=".activity.MainActivity" />-->
+        <!-- <activity android:name=".activity.MainActivity" /> -->
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.StoryActivity" />
         <activity android:name=".activity.CreateStoryActivity" />
+        <activity android:name=".activity.RecommendationsActivity"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@
 
     <!-- Nav drawer and menus -->
     <string name="nav_drawer_home">Home</string>
+    <string name="nav_drawer_recommendations">Recommendations</string>
     <string name="nav_drawer_create">Create</string>
     <string name="nav_drawer_logout">Sign Out</string>
 
@@ -37,6 +38,8 @@
     <!-- Story recycler view -->
     <string name="action_load_previous_stories">Load newer stories</string>
     <string name="action_load_next_stories">Load older stories</string>
+    <string name="no_stories">No stories are available</string>
+    <string name="no_recommendations">You do not have any recommendations</string>
 
     <string name="title_activity_main">MainActivity</string>
 
