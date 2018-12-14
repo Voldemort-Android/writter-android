@@ -3,7 +3,6 @@ package voldemort.writter.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -113,7 +112,7 @@ public class RecommendationsActivity extends AppCompatActivity implements Naviga
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.stories_context_menu, menu);
+        inflater.inflate(R.menu.stories_option_menu, menu);
         return true;
     }
 

@@ -37,6 +37,8 @@
     <string name="prompt_title">Romeo and Juliet</string>
     <string name="prompt_text">Two household both ...</string>
     <string name="create_story_action">Publish</string>
+    <string name="message_publish_success">Published successfully</string>
+    <string name="message_publish_failed">Publish failed</string>
 
     <!-- Story recycler view -->
     <string name="action_load_previous_stories">Load newer stories</string>

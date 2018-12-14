@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mStoriesFragment.setNoResultsMessage(getResources().getString(R.string.no_results));
 
         mNewStoryButton = findViewById(R.id.new_story_fab);
-        mNewStoryButton.setOnClickListener(view -> loadStories());
         mNewStoryButton.setOnClickListener((view) -> navigateTo(CreateStoryActivity.class, false));
 
         // Load stories, then show the next button to load older stories.
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.stories_context_menu, menu);
+        inflater.inflate(R.menu.stories_option_menu, menu);
         return true;
     }
 

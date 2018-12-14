@@ -2,6 +2,7 @@ package voldemort.writter.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +29,8 @@ public class MyStoriesActivity extends AppCompatActivity implements NavigationVi
 
     private StoriesFragment mStoriesFragment;
 
+    private FloatingActionButton mNewStoryButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,9 @@ public class MyStoriesActivity extends AppCompatActivity implements NavigationVi
 
         mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
         mStoriesFragment.setNoResultsMessage(getResources().getString(R.string.no_stories));
+
+        mNewStoryButton = findViewById(R.id.new_story_fab);
+        mNewStoryButton.setOnClickListener((view) -> navigateTo(CreateStoryActivity.class, false));
 
         loadMyStories();
 
@@ -112,7 +118,7 @@ public class MyStoriesActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.stories_context_menu, menu);
+        inflater.inflate(R.menu.stories_option_menu, menu);
         return true;
     }
 
