@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import voldemort.writter.R;
 import voldemort.writter.fragment.StoriesFragment;
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mNewStoryButton;
 
+    private ScrollView mScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         mNewStoryButton = findViewById(R.id.new_story_fab);
 
+        mScrollView = findViewById(R.id.scroll);
+
         // TODO Change this to navigate to New STory activity
         mNewStoryButton.setOnClickListener(this::logout);
 
         String token = TokenUtils.getToken(MainActivity.this);
+
+        loadStories();
 
 //        AuthHttpClient.Get(
 //                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
@@ -56,8 +66,16 @@ public class MainActivity extends AppCompatActivity {
     private void loadStories() {
 
         // TODO This is supposed to load stories, not just one story.
-        StoryHttpService.getStory(69, story -> mStoriesFragment.setText(story.getText()));
-
+        StoryHttpService.getStory(43, story -> mStoriesFragment.setText(story.getText()));
+//        mScrollView.addView(mStoriesFragment);
+//        TextView add = new TextView(this);
+//        ArrayList<Integer> ids = StoryHttpService.getStoryIds();
+//        String allStories = "";
+//        for (int i = 0; i < ids.size(); i++) {
+//            StoryHttpService.getStory(ids.get(i), story -> add.setText(story.getText()));
+//            mScrollView.addView(add);
+//        }
+//        mStoriesFragment.setText(allStories);
     }
 
     // TODO Move this somewhere else
