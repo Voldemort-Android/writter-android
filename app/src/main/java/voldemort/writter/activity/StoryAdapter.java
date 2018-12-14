@@ -49,15 +49,11 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView title;
         TextView username;
-<<<<<<< HEAD
         TextView views;
-=======
         String sendTitle = "";
         String sendAuthor = "";
         String sendText = "";
         int sendRank = 0;
-
->>>>>>> master
 
         public StoryHolder(View itemView) {
             super(itemView);
