@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import voldemort.writter.R;
-import voldemort.writter.activity.StoryActivity;
+import voldemort.writter.activity.ViewStoryActivity;
 import voldemort.writter.data.model.Story;
 
 public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -42,14 +42,9 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
     @Override
     public void onClick(View view) {
         Context context = view.getContext();
-        Intent intent = new Intent(context, StoryActivity.class);
-        intent.putExtra("Title", story.getTitle());
-        intent.putExtra("Author", story.getAuthor().getFirstName());
-        intent.putExtra("Id", story.getId() + "");
-        Log.d("check title", intent.getStringExtra("Title"));
-        Log.d("check author", intent.getStringExtra("Author"));
-        Log.d("check id", intent.getStringExtra("Id"));
-
+        Intent intent = new Intent(context, ViewStoryActivity.class);
+        intent.putExtra("id", String.valueOf(story.getId()));
         context.startActivity(intent);
     }
+
 }
