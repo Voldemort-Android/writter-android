@@ -3,6 +3,7 @@ package voldemort.writter.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class StoriesFragment extends Fragment {
 //        asdf = view.findViewById(R.id.test_text);
 //        asdf.setText("WTF 123");
         asdf = view.findViewById(R.id.test_text);
+        asdf.setMovementMethod(new ScrollingMovementMethod());
         asdf.setText("WTF 123");
         count = 0;
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
