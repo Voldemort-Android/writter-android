@@ -100,6 +100,12 @@ public class RecommendationsActivity extends AppCompatActivity implements Naviga
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.action_refresh:
+                refreshStories();
+                return true;
+            case R.id.action_back_to_top:
+                mStoriesFragment.scrollToTop();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -107,13 +113,8 @@ public class RecommendationsActivity extends AppCompatActivity implements Naviga
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu, menu);
+        inflater.inflate(R.menu.stories_context_menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
     }
 
     @Override

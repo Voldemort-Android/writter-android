@@ -132,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.action_refresh:
+                refreshStories();
+                return true;
+            case R.id.action_back_to_top:
+                mStoriesFragment.scrollToTop();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -139,13 +145,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu, menu);
+        inflater.inflate(R.menu.stories_context_menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
     }
 
     @Override
