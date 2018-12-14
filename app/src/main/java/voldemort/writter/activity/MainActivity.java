@@ -62,11 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         mScrollView = findViewById(R.id.scroll);
-//
-        //mNewStoryButton = findViewById(R.id.new_story_fab);
-//        // TODO Change this to navigate to New STory activity
-//        mNewStoryButton.setOnClickListener(view -> loadStories());
-////        mNewStoryButton.setOnClickListener(this::logout);
+
+        mNewStoryButton = findViewById(R.id.new_story_fab);
+        mNewStoryButton.setOnClickListener(view -> loadStories());
+        mNewStoryButton.setOnClickListener((view) -> navigateTo(CreateStoryActivity.class));
 
         loadStories();
     }
