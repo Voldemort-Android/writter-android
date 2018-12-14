@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "story")
 public class Story {
@@ -117,5 +118,26 @@ public class Story {
 
     public void setModified(@NonNull Date modified) {
         this.modified = modified;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Story story = (Story) o;
+        return id == story.id &&
+                points == story.points &&
+                views == story.views &&
+                enabled == story.enabled &&
+                Objects.equals(title, story.title) &&
+                Objects.equals(text, story.text) &&
+                Objects.equals(author, story.author) &&
+                Objects.equals(created, story.created) &&
+                Objects.equals(modified, story.modified);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, text, author, points, views, enabled, created, modified);
     }
 }

@@ -7,6 +7,10 @@
     <string name="prompt_last_name">Last Name</string>
     <string name="prompt_email">Email Address</string>
 
+    <!-- Nav drawer and menus -->
+    <string name="nav_drawer_home">Home</string>
+    <string name="nav_drawer_logout">Sign Out</string>
+
     <!-- Strings related to login activity -->
     <string name="activity_login_title">Sign in to Writter</string>
     <string name="activity_login_action_sign_in">Sign in</string>
