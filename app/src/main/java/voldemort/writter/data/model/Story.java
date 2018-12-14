@@ -38,6 +38,9 @@ public class Story {
     @NonNull
     private Date modified;
 
+    public Story() {
+    }
+
     @NonNull
     public int getId() {
         return id;
