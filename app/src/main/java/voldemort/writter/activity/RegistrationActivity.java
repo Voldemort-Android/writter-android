@@ -48,7 +48,6 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle(R.string.activity_registration_title);
         setContentView(R.layout.activity_registration);
 
         mFirstNameView = findViewById(R.id.first_name);

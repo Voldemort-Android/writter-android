@@ -10,11 +10,18 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+
 import voldemort.writter.R;
+import voldemort.writter.data.model.Story;
+
 
 public class StoriesFragment extends Fragment {
 
     private TextView asdf;
+
+    private LinkedHashSet<Story> mStories = new LinkedHashSet<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,8 +35,15 @@ public class StoriesFragment extends Fragment {
         return view;
     }
 
-    public void setText(String text) {
-        asdf.setText(text);
+    public void onLoadStories(List<Story> stories) {
+        mStories.addAll(stories);
+        StringBuilder sb = new StringBuilder();
+        mStories.forEach(story -> sb.append(story.getTitle() + " - " + story.getId()).append("\n"));
+        asdf.setText(sb.toString());
+    }
+
+    public void clearStories() {
+        mStories.clear();
     }
 
 }
