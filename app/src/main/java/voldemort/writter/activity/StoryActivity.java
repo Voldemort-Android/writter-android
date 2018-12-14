@@ -29,7 +29,7 @@ public class StoryActivity extends AppCompatActivity {
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
-    private RatingBar mRating;
+    private RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,8 @@ public class StoryActivity extends AppCompatActivity {
         mAuthor = findViewById(R.id.author_of_story);
         mText = findViewById(R.id.text_of_story);
         mText.setMovementMethod(new ScrollingMovementMethod());
-        mRating = findViewById(R.id.ratingBar2);
+
+        addListenerOnRatingBar();
 
         Intent intent = getIntent();
 
@@ -48,19 +49,35 @@ public class StoryActivity extends AppCompatActivity {
         mAuthor.setText(intent.getStringExtra("Author"));
         mText.setText(intent.getStringExtra("Text"));
 
-        if (intent.getStringExtra("rating") != null) {
-            int rank = Integer.parseInt(intent.getStringExtra("rating"));
-            mRating.setRating(rank);
-        }
-
-
-
 
 
 //        loadStories();
 
     }
 
+    public void addListenerOnRatingBar() {
+
+        Intent intent = getIntent();
+
+        if (intent.getStringExtra("rating") != null) {
+            int rank = Integer.parseInt(intent.getStringExtra("rating"));
+            mRatingBar.setRating(rank);
+        }
+
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+//        txtRatingValue = (TextView) findViewById(R.id.txtRatingValue);
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+
+                //Meathod to change the rating
+
+            }
+        });
+    }
 
 //    private void loadStories() {
 //        StoryHttpService.getPaginatedStories(++lastPage, pageSize, mStoriesFragment::onLoadStories);
