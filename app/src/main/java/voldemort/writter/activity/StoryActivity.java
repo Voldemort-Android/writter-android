@@ -20,43 +20,37 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import voldemort.writter.R;
+import voldemort.writter.data.model.Story;
 import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.utils.TokenUtils;
 
 public class StoryActivity extends AppCompatActivity {
 
-
+    private int id;
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
     private RatingBar mRatingBar;
+//    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.story_layout);
 
         mTitle = findViewById(R.id.title_of_story);
         mAuthor = findViewById(R.id.author_of_story);
         mText = findViewById(R.id.text_of_story);
-//        mText.setMovementMethod(new ScrollingMovementMethod());
+        mText.setMovementMethod(new ScrollingMovementMethod());
 
-//        addListenerOnRatingBar();
+        addListenerOnRatingBar();
 
         Intent intent = getIntent();
-
-       if(intent.hasExtra("Title")){
-           mTitle.setText(intent.getStringExtra("Title"));
-           Log.d("Title", mTitle.getText().toString());
-       }
-       else mTitle.setText("NO Title");
-//        mTitle.setText(intent.getStringExtra("Title"));
-//        mAuthor.setText(intent.getStringExtra("Author"));
-//        mText.setText(intent.getStringExtra("Text"));
-
-
-
+        id = Integer.parseInt(intent.getStringExtra("Id"));
+        mTitle.setText(intent.getStringExtra("Title"));
+        mAuthor.setText(intent.getStringExtra("Author"));
+        getStoryText(id);
 //        loadStories();
 
     }
@@ -70,7 +64,7 @@ public class StoryActivity extends AppCompatActivity {
             mRatingBar.setRating(rank);
         }
 
-        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar2);
 //        txtRatingValue = (TextView) findViewById(R.id.txtRatingValue);
 
         //if rating value is changed,
@@ -84,6 +78,21 @@ public class StoryActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void getStoryActuall(Story story) {
+
+
+    }
+
+    private void getStoryText(int id) {
+//        Story storyHolder = new Story();
+        StoryHttpService.getStory(id, story -> mText.setText(story.getText()));
+
+//        return "Whats a Story with You";
+    }
+
+
 
 //    private void loadStories() {
 //        StoryHttpService.getPaginatedStories(++lastPage, pageSize, mStoriesFragment::onLoadStories);
@@ -108,12 +117,12 @@ public class StoryActivity extends AppCompatActivity {
 //
 //        startActivity(intent);
 //    }
-
+//
 //    private void navigateTo(Class<?> activityClass) {
 //        Intent intent = new Intent(StoryActivity.this, activityClass);
 //        startActivity(intent);
 //    }
-
+//
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
@@ -123,7 +132,7 @@ public class StoryActivity extends AppCompatActivity {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
+//
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getMenuInflater();
