@@ -85,7 +85,7 @@ public class RecommendationsActivity extends AppCompatActivity implements Naviga
     }
 
     private void navigateTo(Class<?> activityClass, boolean clearStack) {
-        Intent intent = new Intent(RecommendationsActivity.this, activityClass);
+        Intent intent = new Intent(this, activityClass);
         if (clearStack) {
             // Kill activity stack so that the user cannot go back using the back button.
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

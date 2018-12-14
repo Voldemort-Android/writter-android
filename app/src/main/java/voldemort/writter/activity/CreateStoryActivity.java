@@ -66,7 +66,7 @@ public class CreateStoryActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-        Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void onPublishError(HttpResponse httpResponse) {

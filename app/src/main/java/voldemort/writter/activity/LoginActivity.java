@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginSuccess(HttpResponse httpResponse) {
         mAuthTask = null;
 
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
 
         // Kill activity stack so that the user cannot go back using the back button.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToRegistrationActivity(View view) {
-        Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+        Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
 

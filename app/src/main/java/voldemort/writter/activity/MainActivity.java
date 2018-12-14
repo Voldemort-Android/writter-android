@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void navigateTo(Class<?> activityClass, boolean clearStack) {
-        Intent intent = new Intent(MainActivity.this, activityClass);
+        Intent intent = new Intent(this, activityClass);
         if (clearStack) {
             // Kill activity stack so that the user cannot go back using the back button.
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

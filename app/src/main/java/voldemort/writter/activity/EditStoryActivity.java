@@ -55,7 +55,7 @@ public class EditStoryActivity extends AppCompatActivity {
 
     private void onStoryLoaded(Story story) {
         mStory = story;
-        mEditStoryFragment.setText(story.getTitle());
+        mEditStoryFragment.setTitle(story.getTitle());
         mEditStoryFragment.setText(story.getText());
     }
 
@@ -78,7 +78,7 @@ public class EditStoryActivity extends AppCompatActivity {
 
         // Display success message.
         String successMessage = getResources().getString(R.string.message_update_success);
-        Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(), successMessage, Toast.LENGTH_SHORT).show();
     }
 
     public void onUpdateError(HttpResponse httpResponse) {
