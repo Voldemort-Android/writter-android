@@ -33,6 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.StoryActivity" />
+        <activity android:name=".activity.CreateStoryActivity" />
     </application>
 
 </manifest>

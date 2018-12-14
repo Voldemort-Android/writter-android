@@ -9,6 +9,7 @@
 
     <!-- Nav drawer and menus -->
     <string name="nav_drawer_home">Home</string>
+    <string name="nav_drawer_create">Create</string>
     <string name="nav_drawer_logout">Sign Out</string>
 
     <!-- Strings related to login activity -->
@@ -24,6 +25,14 @@
     <string name="activity_registration_title">Create a Writter account</string>
     <string name="activity_registration_action_register">Create account</string>
     <string name="activity_registration_action_login">Already have an account?</string>
+
+    <!-- String related to create story activity -->
+    <string name="create_story_welcome">Write a Story</string>
+    <string name="create_story_title">Title</string>
+    <string name="create_story_text">Text</string>
+    <string name="prompt_title">Romeo and Juliet</string>
+    <string name="prompt_text">Two household both ...</string>
+    <string name="create_story_action">Publish</string>
 
     <string name="title_activity_main">MainActivity</string>
 

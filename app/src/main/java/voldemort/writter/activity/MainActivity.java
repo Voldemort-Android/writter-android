@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private StoriesFragment mStoriesFragment;
 
-    private FloatingActionButton mNewStoryButton;
+//    private FloatingActionButton mNewStoryButton;
 
     private ScrollView mScrollView;
 
@@ -67,43 +67,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getRecommendedStories();
 
-//        getAllStories();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setCheckedItem(R.id.home);
 
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black);
-//
-//        mDrawerLayout = findViewById(R.id.drawer_layout);
-//
-//        mNavigationView = findViewById(R.id.nav_view);
-//        mNavigationView.setNavigationItemSelectedListener(this);
-//        mNavigationView.setCheckedItem(R.id.home);
-//
-//        mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
-//
 //        mNewStoryButton = findViewById(R.id.new_story_fab);
-//
-//        mScrollView = findViewById(R.id.scroll);
+
+        mScrollView = findViewById(R.id.scroll);
 //
 //        // TODO Change this to navigate to New STory activity
 //        mNewStoryButton.setOnClickListener(view -> loadStories());
 ////        mNewStoryButton.setOnClickListener(this::logout);
-//
-//        loadStories();
 
-//        AuthHttpClient.Get(
-//                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
-//                (res) -> {
-//                    mStoriesFragment.setText(res.getResponseBody());
-//                    Log.d("HELLO", res.getResponseBody());
-//                },
-//                (err) -> {
-//                    Log.d("HELLO", err.toString());
-//                }
-//        );
     }
 
     private void getAllStories() {
@@ -152,7 +136,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.create:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -180,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             if (itemId == R.id.home) {
                 navigateTo(MainActivity.class);
+            }
+            if (itemId == R.id.create) {
+                navigateTo(CreateStoryActivity.class);
             }
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);

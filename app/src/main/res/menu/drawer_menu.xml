@@ -6,6 +6,10 @@
             android:icon="@drawable/ic_home_black"
             android:title="@string/nav_drawer_home" />
         <item
+            android:id="@+id/create"
+            android:icon="@drawable/ic_create_story_black"
+            android:title="@string/nav_drawer_create" />
+        <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_exit_to_app_black"
             android:title="@string/nav_drawer_logout" />
