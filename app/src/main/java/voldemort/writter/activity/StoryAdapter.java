@@ -13,77 +13,108 @@ import android.widget.TextView;
 
 import voldemort.writter.R;
 import voldemort.writter.data.model.Story;
+import voldemort.writter.holder.RecyclerViewButtonHolder;
+import voldemort.writter.holder.StoryHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder>{
-
-    private Context mContext;
+public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Story> mStories;
 
+    private Context mContext;
+
+    private Runnable previousButtonCallback;
+
+    private Runnable nextButtonCallback;
+
     public StoryAdapter(Context context, List<Story> stories){
-        this.mContext = context;
-        this.mStories = stories;
+        mContext = context;
+        mStories = stories;
+    }
+
+    public void showPreviousButton(Runnable callback) {
+        boolean notify = previousButtonCallback == null;
+        previousButtonCallback = callback;
+        if (notify) {
+            notifyItemInserted(0);
+        }
+    }
+
+    public void hidePreviousButton() {
+        boolean notify = previousButtonCallback != null;
+        previousButtonCallback = null;
+        if (notify) {
+            notifyItemRemoved(0);
+        }
+    }
+
+    public void showNextButton(Runnable callback) {
+        boolean notify = nextButtonCallback == null;
+        nextButtonCallback = callback;
+        if (notify) {
+            notifyItemInserted(mStories.size() + (previousButtonCallback != null ? 1 : 0));
+        }
+    }
+
+    public void hideNextButton() {
+        boolean notify = nextButtonCallback != null;
+        nextButtonCallback = null;
+        if (notify) {
+            notifyItemRemoved(mStories.size() + (previousButtonCallback != null ? 1 : 0));
+        }
     }
 
     @Override
-    public StoryAdapter.StoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        int listIndex = position - (previousButtonCallback != null ? 1 : 0);
+        if (listIndex < 0 || listIndex >= mStories.size()) {
+            return R.layout.recycler_view_button;
+        }
+        return R.layout.story_item;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(R.layout.story_item, parent, shouldAttachToParentImmediately);
-        StoryHolder viewHolder = new StoryHolder(view);
-        return viewHolder;
+        if (viewType == R.layout.story_item) {
+            View view = inflater.inflate(R.layout.story_item, parent, shouldAttachToParentImmediately);
+            return new StoryHolder(view);
+        }
+        else {
+            View view = inflater.inflate(R.layout.recycler_view_button, parent, shouldAttachToParentImmediately);
+            return new RecyclerViewButtonHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(StoryAdapter.StoryHolder holder, int position) {
-        holder.bind(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int listIndex = position - (previousButtonCallback != null ? 1 : 0);
+        if (holder instanceof StoryHolder) {
+            ((StoryHolder) holder).bind(mStories.get(listIndex));
+        }
+        else if (holder instanceof RecyclerViewButtonHolder) {
+            if (listIndex < 0) {
+                String label = mContext.getResources().getString(R.string.action_load_previous_stories);
+                ((RecyclerViewButtonHolder) holder).bind(label, previousButtonCallback);
+            }
+            else {
+                String label = mContext.getResources().getString(R.string.action_load_next_stories);
+                ((RecyclerViewButtonHolder) holder).bind(label, nextButtonCallback);
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mStories.size();
+        return mStories.size() +
+                (previousButtonCallback != null ? 1 : 0) +
+                (nextButtonCallback != null ? 1 : 0);
     }
 
-    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView title;
-        private TextView username;
-        private TextView views;
 
-        public StoryHolder(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title);
-            username = itemView.findViewById(R.id.username);
-            views = itemView.findViewById(R.id.views);
-        }
-
-        private void bind(final int listIndex) {
-            Story story = mStories.get(listIndex);
-            title.setText(story.getTitle());
-            views.setText(story.getViews() + "");
-            String usernameText = story.getAuthor().getUsername();
-            usernameText += " • ";
-            usernameText += story.getCreated();
-            username.setText(usernameText);
-
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, StoryActivity.class);
-            intent.putExtra("Title", mStories.get(getAdapterPosition()).getTitle());
-            intent.putExtra("Author", mStories.get(getAdapterPosition()).getAuthor().getFirstName());
-            intent.putExtra("Id", mStories.get(getAdapterPosition()).getId() + "");
-            Log.d("check title", intent.getStringExtra("Title"));
-            Log.d("check author", intent.getStringExtra("Author"));
-            Log.d("check id", intent.getStringExtra("Id"));
-
-            mContext.startActivity(intent);
-        }
-    }
 }

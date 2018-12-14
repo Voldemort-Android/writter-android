@@ -34,6 +34,10 @@
     <string name="prompt_text">Two household both ...</string>
     <string name="create_story_action">Publish</string>
 
+    <!-- Story recycler view -->
+    <string name="action_load_previous_stories">Load newer stories</string>
+    <string name="action_load_next_stories">Load older stories</string>
+
     <string name="title_activity_main">MainActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

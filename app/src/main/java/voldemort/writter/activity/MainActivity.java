@@ -23,9 +23,11 @@ import voldemort.writter.utils.TokenUtils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final int pageSize = 20;
+    private final int pageSize = 10;
 
     private int lastPage = 1;
+
+    private boolean loadingStories = false;
 
     private DrawerLayout mDrawerLayout;
 
@@ -35,16 +37,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FloatingActionButton mNewStoryButton;
 
-    private ScrollView mScrollView;
-
-    private ProgressBar mProgressBar;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,31 +56,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mStoriesFragment = (StoriesFragment) getSupportFragmentManager().findFragmentById(R.id.stories_fragment);
 
-
-        mScrollView = findViewById(R.id.scroll);
-
         mNewStoryButton = findViewById(R.id.new_story_fab);
         mNewStoryButton.setOnClickListener(view -> loadStories());
         mNewStoryButton.setOnClickListener((view) -> navigateTo(CreateStoryActivity.class));
 
+        // Load stories, then show the next button to load older stories.
         loadStories();
+        mStoriesFragment.showNextButton(this::loadOlderStories);
+
     }
 
-//    private void getAllStories() {
-//        StoryHttpService.getAllStories(this::populateRecyclerView);
-//    }
 //
 //    private void getRecommendedStories() {
 //        StoryHttpService.getRecommendedStories(mStoriesFragment::onLoadStories);
 //    }
 
     private void loadStories() {
-        StoryHttpService.getPaginatedStories(lastPage, pageSize, mStoriesFragment::onLoadStories);
+        if (loadingStories) {
+            return;
+        }
+        loadingStories = true;
+        mStoriesFragment.showProgress(true);
+        StoryHttpService.getPaginatedStories(lastPage, pageSize, (stories) -> {
+            mStoriesFragment.onLoadStories(stories);
+            mStoriesFragment.showProgress(false);
+            loadingStories = false;
+        });
     }
 
     private void loadOlderStories() {
         lastPage++;
         loadStories();
+        mStoriesFragment.showPreviousButton(this::loadNewerStories);
     }
 
     private void loadNewerStories() {
@@ -93,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         lastPage--;
         loadStories();
+        if (lastPage == 1) {
+            mStoriesFragment.hidePreviousButton();
+        }
     }
 
     private void refreshStories() {
