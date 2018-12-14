@@ -12,6 +12,7 @@ import android.widget.Button;
 import voldemort.writter.R;
 import voldemort.writter.fragment.StoriesFragment;
 import voldemort.writter.http.HttpEndpoints;
+import voldemort.writter.http.StoryHttpService;
 import voldemort.writter.http.client.AuthHttpClient;
 import voldemort.writter.utils.TokenUtils;
 
@@ -49,25 +50,13 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d("HELLO", err.toString());
 //                }
 //        );
-
-        AuthHttpClient.Get(
-                HttpEndpoints.WRITTER_SERVER_API + "/story/43",
-                (res) -> {
-                    mStoriesFragment.setText(res.getResponseBody());
-                    Log.d("HELLO", res.getResponseBody());
-                },
-                (err) -> {
-                    Log.d("HELLO", err.toString());
-                }
-        );
-
     }
 
 
     private void loadStories() {
 
-
-
+        // TODO This is supposed to load stories, not just one story.
+        StoryHttpService.getStory(69, story -> mStoriesFragment.setText(story.getText()));
 
     }
 

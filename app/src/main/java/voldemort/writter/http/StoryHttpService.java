@@ -12,21 +12,24 @@ import voldemort.writter.http.client.AuthHttpClient;
 
 public final class StoryHttpService {
 
+    private static final String STORY_ENDPOINT = HttpEndpoints.WRITTER_SERVER_API + "/story";
+
     private volatile static ObjectMapper mapper;
 
     private StoryHttpService() {
-        mapper = WritterApplication.getMapper();
+
     }
 
     public static void getStory(long storyId, Consumer<Story> callback) {
         AuthHttpClient.Get(
-                HttpEndpoints.WRITTER_SERVER_API + "/" + storyId,
+                STORY_ENDPOINT + "/" + storyId,
                 (res) -> {
                     try {
-                        Story story = mapper.readValue(res.getResponseBody(), Story.class);
+                        Story story = getMapper().readValue(res.getResponseBody(), Story.class);
                         callback.accept(story);
                     }
                     catch (IOException e) {
+                        e.printStackTrace();
                         // Call error callback;
                     }
                 }
@@ -40,6 +43,13 @@ public final class StoryHttpService {
                     //List<Story> stories =
                 }
         );
+    }
+
+    private static ObjectMapper getMapper() {
+        if (mapper == null) {
+            mapper = WritterApplication.getMapper();
+        }
+        return mapper;
     }
 
 
