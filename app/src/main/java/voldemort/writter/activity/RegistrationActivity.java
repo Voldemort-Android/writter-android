@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mFirstNameView = findViewById(R.id.first_name);
         mLastNameView = findViewById(R.id.last_name);
         mEmailView = findViewById(R.id.email);
-        mUsernameView = findViewById(R.id.username);
+        mUsernameView = findViewById(R.id.info);
         mPasswordView = findViewById(R.id.password);
         mPasswordVerifyView = findViewById(R.id.confirm_password);
 
