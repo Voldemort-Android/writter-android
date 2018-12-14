@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import voldemort.writter.R;
 import voldemort.writter.data.model.Story;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(R.layout.item, parent, shouldAttachToParentImmediately);
+        View view = inflater.inflate(R.layout.story_item, parent, shouldAttachToParentImmediately);
         StoryHolder viewHolder = new StoryHolder(view);
         return viewHolder;
     }
@@ -48,13 +49,18 @@ public class StoryAdapter  extends RecyclerView.Adapter<StoryAdapter.StoryHolder
 
         public StoryHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.name);
-            username = (TextView) itemView.findViewById(R.id.url);
+            title = (TextView) itemView.findViewById(R.id.title);
+            username = (TextView) itemView.findViewById(R.id.username);
         }
 
         void bind(final int listIndex) {
             title.setText(mStories.get(listIndex).getTitle());
-            username.setText(mStories.get(listIndex).getAuthor().getUsername());
+            String usernameText = mStories.get(listIndex).getAuthor().getUsername();
+            usernameText += " • points: ";
+            usernameText += mStories.get(listIndex).getPoints();
+            usernameText += " • views: ";
+            usernameText += mStories.get(listIndex).getViews();
+            username.setText(usernameText);
             itemView.setOnClickListener(this);
         }
 
