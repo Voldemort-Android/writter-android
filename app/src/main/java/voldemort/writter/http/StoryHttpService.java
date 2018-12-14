@@ -1,18 +1,11 @@
 package voldemort.writter.http;
 
-import android.util.Log;
-
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -31,6 +24,19 @@ public final class StoryHttpService {
 
     }
 
+    public static void createStory(Story story, Consumer<Story> callback) {
+        createStory(story, callback, null);
+    }
+
+    public static void createStory(Story story, Consumer<Story> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Put(
+                STORY_ENDPOINT,
+                story,
+                (res) -> handleStoryResponse(res, callback),
+                errorCallback
+        );
+    }
+
     public static void getStory(long storyId, Consumer<Story> callback) {
         getStory(storyId, callback, null);
     }
@@ -38,48 +44,57 @@ public final class StoryHttpService {
     public static void getStory(long storyId, Consumer<Story> callback, Consumer<HttpResponse> errorCallback) {
         AuthHttpClient.Get(
                 STORY_ENDPOINT + "/" + storyId,
-                (res) -> {
-                    try {
-                        Story story = getMapper().readValue(res.getResponseBody(), Story.class);
-                        callback.accept(story);
-                    }
-                    catch (IOException e) {
-                        onJsonParseError();
-                    }
-                },
+                (res) -> handleStoryResponse(res, callback),
                 errorCallback
         );
     }
 
-    public static ArrayList<Integer> getStoryIds() {
-        ArrayList<Integer> idArray = new ArrayList<>();
+    public static void getStoriesForUser(Consumer<List<Story>> callback) {
+        getStoriesForUser(callback, null);
+    }
+
+    public static void getStoriesForUser(Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Get(
+                STORY_ENDPOINT + "/user",
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
+        );
+    }
+
+    public static void getStoriesByUser(Long userId, Consumer<List<Story>> callback) {
+        getStoriesByUser(userId, callback, null);
+    }
+
+    public static void getStoriesByUser(Long userId, Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Get(
+                STORY_ENDPOINT + "/user/" + userId,
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
+        );
+    }
+
+    public static void getRecommendedStories(Long userId, Consumer<List<Story>> callback) {
+        getRecommendedStories(userId, callback, null);
+    }
+
+    public static void getRecommendedStories(Long userId, Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Get(
+                STORY_ENDPOINT + "/recommended/" + userId,
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
+        );
+    }
+
+    public static void getAllStories(Consumer<List<Story>> callback) {
+        getAllStories( callback, null);
+    }
+
+    public static void getAllStories(Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
         AuthHttpClient.Get(
                 STORY_ENDPOINT,
-                (res) -> {
-                    try {
-//
-                        JSONObject oneStory;
-                        JSONArray storiesFromRedArray;
-                        String idValue;
-
-                        try {
-                            storiesFromRedArray = new JSONArray(res.getResponseBody());
-                            for (int i = 0; i < storiesFromRedArray.length(); i++) {
-                                oneStory = (JSONObject) storiesFromRedArray.get(i);
-                                idValue = oneStory.getString("id");
-                                idArray.add(Integer.parseInt(idValue));
-                            }
-                            Log.d("IDs", idArray.toString());
-                        } catch (JSONException e) {
-                            Log.e("MY bad", e.toString());
-                        }
-                    }
-                    catch ( Error e) {
-                        e.printStackTrace();
-                    }
-                }
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
         );
-        return idArray;
     }
 
     public static void getPaginatedStories(int page, int limit, Consumer<List<Story>> callback) {
@@ -88,16 +103,21 @@ public final class StoryHttpService {
 
     public static void getPaginatedStories(int page, int limit, Consumer<List<Story>> callback, Consumer<HttpResponse> errorCallback) {
         AuthHttpClient.Get(
-                HttpEndpoints.WRITTER_SERVER_API + "/story/page/" + page + "/limit/" + limit,
-                (res) -> {
-                    try {
-                        List<Story> stories = getMapper().readValue(res.getResponseBody(), new TypeReference<List<Story>>(){});
-                        callback.accept(stories);
-                    }
-                    catch (IOException e) {
-                        onJsonParseError();
-                    }
-                },
+                STORY_ENDPOINT + "/page/" + page + "/limit/" + limit,
+                (res) -> handleStoriesResponse(res, callback),
+                errorCallback
+        );
+    }
+
+    public static void updateStory(Story story, Consumer<Story> callback) {
+        updateStory(story, callback, null);
+    }
+
+    public static void updateStory(Story story, Consumer<Story> callback, Consumer<HttpResponse> errorCallback) {
+        AuthHttpClient.Post(
+                STORY_ENDPOINT,
+                story,
+                (res) -> handleStoryResponse(res, callback),
                 errorCallback
         );
     }
@@ -107,6 +127,26 @@ public final class StoryHttpService {
             mapper = WritterApplication.getMapper();
         }
         return mapper;
+    }
+
+    private static void handleStoryResponse(HttpResponse res, Consumer<Story> callback) {
+        try {
+            Story story = getMapper().readValue(res.getResponseBody(), Story.class);
+            callback.accept(story);
+        }
+        catch (IOException e) {
+            onJsonParseError();
+        }
+    }
+
+    private static void handleStoriesResponse(HttpResponse res, Consumer<List<Story>> callback) {
+        try {
+            List<Story> stories = getMapper().readValue(res.getResponseBody(), new TypeReference<List<Story>>(){});
+            callback.accept(stories);
+        }
+        catch (IOException e) {
+            onJsonParseError();
+        }
     }
 
     private static void onJsonParseError() {
