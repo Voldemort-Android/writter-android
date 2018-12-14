@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.Objects;
+
 import voldemort.writter.R;
 import voldemort.writter.data.model.Story;
 
@@ -16,6 +18,9 @@ import voldemort.writter.data.model.Story;
  * A simple {@link Fragment} subclass.
  */
 public class EditStoryFragment extends Fragment {
+
+    private String originalTitle;
+    private String originalText;
 
     private EditText mTitleView;
     private EditText mTextView;
@@ -33,10 +38,12 @@ public class EditStoryFragment extends Fragment {
     }
 
     public void setTitle(String title) {
+        originalTitle = title;
         mTitleView.setText(title);
     }
 
     public void setText(String text) {
+        originalText = text;
         mTextView.setText(text);
     }
 
@@ -61,6 +68,11 @@ public class EditStoryFragment extends Fragment {
         story.setTitle(title);
         story.setText(text);
         return story;
+    }
+
+    public boolean hasChanges() {
+        return !Objects.equals(originalTitle, mTitleView.getText().toString()) ||
+                !Objects.equals(originalText, mTextView.getText().toString());
     }
 
 }

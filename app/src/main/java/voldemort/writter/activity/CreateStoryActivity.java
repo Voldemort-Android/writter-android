@@ -96,6 +96,11 @@ public class CreateStoryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        if (!mEditStoryFragment.hasChanges()) {
+            super.onBackPressed();
+            return;
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.discard_changes_dialog_title))
                 .setMessage(getResources().getString(R.string.discard_changes_dialog_message))
