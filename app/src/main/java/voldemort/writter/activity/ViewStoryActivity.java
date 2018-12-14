@@ -8,6 +8,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import voldemort.writter.R;
@@ -18,10 +20,13 @@ import voldemort.writter.utils.TokenUtils;
 
 public class ViewStoryActivity extends AppCompatActivity {
 
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy h:mm a");
+
     private Story mStory;
 
     private TextView mTitleView;
-    private TextView mAuthor;
+    private TextView mInfoView;
+    private TextView mViewCountView;
     private TextView mTextView;
     private RatingBar mRatingBar;
     private FloatingActionButton mEditStoryFab;
@@ -32,7 +37,8 @@ public class ViewStoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_story);
 
         mTitleView = findViewById(R.id.title_of_story);
-        mAuthor = findViewById(R.id.author_of_story);
+        mInfoView = findViewById(R.id.story_info);
+        mViewCountView = findViewById(R.id.story_view_count);
         mTextView = findViewById(R.id.text_of_story);
         mTextView.setMovementMethod(new ScrollingMovementMethod());
 
@@ -82,11 +88,12 @@ public class ViewStoryActivity extends AppCompatActivity {
 
     private void onStoryLoaded(Story story) {
         mStory = story;
+        User author = story.getAuthor();
+
         mTitleView.setText(story.getTitle());
         mTextView.setText(story.getText());
-
-        User author = story.getAuthor();
-        mAuthor.setText(author.getUsername() + " - " + author.getFirstName() + " " + author.getLastName());
+        mInfoView.setText("Published by " + author.getUsername() + " at " + DATE_FORMAT.format(story.getCreated()));
+        mViewCountView.setText(story.getViews() + " views");
 
         // Enable the edit button if its the current user's own story.
         User user = TokenUtils.getCurrentUser();
