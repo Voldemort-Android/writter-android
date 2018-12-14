@@ -39,8 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
         String token = TokenUtils.getToken(MainActivity.this);
 
+//        AuthHttpClient.Get(
+//                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
+//                (res) -> {
+//                    mStoriesFragment.setText(res.getResponseBody());
+//                    Log.d("HELLO", res.getResponseBody());
+//                },
+//                (err) -> {
+//                    Log.d("HELLO", err.toString());
+//                }
+//        );
+
         AuthHttpClient.Get(
-                HttpEndpoints.WRITTER_SERVER_API + "/example/whoami",
+                HttpEndpoints.WRITTER_SERVER_API + "/story/43",
                 (res) -> {
                     mStoriesFragment.setText(res.getResponseBody());
                     Log.d("HELLO", res.getResponseBody());
