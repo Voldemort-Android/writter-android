@@ -19,7 +19,6 @@ import voldemort.writter.R;
 public class StoriesFragment extends Fragment {
 
     private TextView asdf;
-    private ScrollView display;
     private RatingBar ratingBar;
     public int count;
 
@@ -30,8 +29,6 @@ public class StoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stories, container, false);
 
-//        asdf = view.findViewById(R.id.test_text);
-//        asdf.setText("WTF 123");
         asdf = view.findViewById(R.id.test_text);
         asdf.setMovementMethod(new ScrollingMovementMethod());
         asdf.setText("WTF 123");
