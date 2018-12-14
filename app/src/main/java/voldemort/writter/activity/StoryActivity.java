@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,14 +40,20 @@ public class StoryActivity extends AppCompatActivity {
         mTitle = findViewById(R.id.title_of_story);
         mAuthor = findViewById(R.id.author_of_story);
         mText = findViewById(R.id.text_of_story);
-        mText.setMovementMethod(new ScrollingMovementMethod());
+//        mText.setMovementMethod(new ScrollingMovementMethod());
 
-        addListenerOnRatingBar();
+//        addListenerOnRatingBar();
 
         Intent intent = getIntent();
-
-        mTitle.setText(intent.getStringExtra("Title"));
-        mAuthor.setText(intent.getStringExtra("Author"));
+        String test = intent.getStringExtra("Title");
+        Log.d("Title", test);
+        if(intent.hasExtra("Title")){
+//           mTitle.setText(intent.getStringExtra("Title"));
+//           Log.d("Title", mTitle.getText().toString());
+        }
+        else mTitle.setText("NO Title");
+//        mTitle.setText(intent.getStringExtra("Title"));
+//        mAuthor.setText(intent.getStringExtra("Author"));
 //        mText.setText(intent.getStringExtra("Text"));
 
 
